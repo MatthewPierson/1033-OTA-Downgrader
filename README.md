@@ -18,7 +18,7 @@ These scripts have been tested by me and others and should be fine but incase so
 -------------------------------------------
 -------------------------------------------
 
-The only things you need for this is as follows: 
+The only things you need for this are as follows: 
 
 The files from this repo
 
@@ -62,5 +62,7 @@ Then run the scripts in this order:
 8. Enjoy 10.3.3! 
 
 -------------------------------------------
+
+Any questions either open an issue here, message/@me on twitter or comment on the reddit post.
 
 Enjoy =) Hope these scripts were useful to you! <3 
