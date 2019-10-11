@@ -38,14 +38,14 @@ First make sure you have the 10.3.3 IPSW in the main directory where "prep.sh" a
 Also make sure you have at least 10 GB free on your SSD/HDD
 
 Then run the scripts in this order:
-	1. "chmod +x *.sh"
-	2. "sudo ./install.sh"
-	3. "./prep.sh"
-	4. Place device into DFU Mode and connect to computer. 
-	THIS SCRIPT MAY AND WILL FAIL UP TO 40 TIMES. JUST KEEP TRYING. 
-	5. "./pwn.sh"
-	6. "./restore.sh"
-	7. Enjoy 10.3.3! 
+1. `"chmod +x *.sh"`
+2. `"sudo ./install.sh"`
+3. `"./prep.sh"`
+4. Place device into DFU Mode and connect to computer. 
+THIS SCRIPT MAY AND WILL FAIL UP TO 40 TIMES. JUST KEEP TRYING. 
+5. `"./pwn.sh"`
+6. `"./restore.sh"`
+7. Enjoy 10.3.3! 
 
 If the scripts won't run make sure the permissions are set right with 
 
