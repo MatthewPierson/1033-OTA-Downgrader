@@ -93,15 +93,15 @@ echo "[Log] Created folders"
 
 echo "[Log] Moving dylibs into place"
 
-sudo cp rsu/lib/* /rsu/lib/
+sudo cp -a rsu/lib/. /rsu/lib/
 echo "[Log] Copying libcompression and libz"
-sudo cp rsu/local/lib/* /rsu/local/lib/
+sudo cp -a rsu/local/lib/. /rsu/local/lib/
 echo "[Log] Copying libfragmentzip, libimobiledevice, libirecovery and libplist"
-sudo cp rsu/local/opt/openssl/lib/* /rsu/local/opt/openssl/lib/
+sudo cp -a rsu/local/opt/openssl/lib/. /rsu/local/opt/openssl/lib/
 echo "[Log] Copying openssl"
-sudo cp rsu/local/opt/usbmuxd/lib/* /rsu/local/opt/usbmuxd/lib/
+sudo cp -a rsu/local/opt/usbmuxd/lib/. /rsu/local/opt/usbmuxd/lib/
 echo "[Log] Copying usbmuxd"
-sudo cp rsu/local/opt/libzip/lib/* /rsu/local/opt/libzip/lib/
+sudo cp -a rsu/local/opt/libzip/lib/. /rsu/local/opt/libzip/lib/
 echo "[Log] Copying libzip"
 
 echo "[Log] Installed everything"

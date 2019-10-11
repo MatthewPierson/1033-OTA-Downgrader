@@ -61,6 +61,8 @@ echo "[Log] Copying iBSS"
 
 echo "[Log] Patching files"
 
+chmod +x bin/*
+
 bin/bspatch tmp/iBSS.iphone6.RELEASE.im4p tmp/ibss.final patch/ibss.patch
 
 bin/bspatch tmp/iBEC.iphone6.RELEASE.im4p tmp/ibec.final patch/ibec.patch
