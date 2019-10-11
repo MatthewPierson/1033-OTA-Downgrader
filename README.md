@@ -6,7 +6,7 @@ Please read this before doing ANYTHING
 
 Only supports the iPhone 5s (6,1 and 6,2).
 YOU DO NOT NEED PREVIOUSLY SAVED BLOBS. 
-PLEASE DON'T ASK ME IF YOU NEED BLOBS, IT'S ANNOYING
+PLEASE DON'T ASK ME IF YOU NEED BLOBS, IT'S ANNOYING TO GET THE SAME QUESTION 1000+ TIMES
 -------------------------------------------
 
 Has been tested on macOS Mojave and Catalina, on both fresh installs and not fresh. 
@@ -19,11 +19,16 @@ These scripts have been tested by me and others and should be fine but incase so
 -------------------------------------------
 
 The only things you need for this is as follows: 
-An iPhone 5s (6,1 or 6,2)
+The files from this repo
 iOS 10.3.3 IPSW from ipsw.me 
-Terminal open
+All the above in the same folder
+An iPhone 5s (6,1 or 6,2)
+A Terminal window open
 A few braincells (VERY IMPORTANT) 
 Commonsense (RARE BUT ALSO VERY IMPORTANT)
+Patience!!!
+
+-------------------------------------------
 
 Thank you to anyone who helped me with testing or anything else! Couldn't have done it myself. 
 
