@@ -36,12 +36,13 @@ Then run the scripts in this order:
 
 1. "./install.sh"
 2. "sudo ./install_2.sh"
-3. "./prep.sh"
-4. Place device into DFU Mode and connect to computer. 
+3. Script will reboot your computer. If it doesn't then reboot manually.
+4. "./prep.sh"
+5. Place device into DFU Mode and connect to computer. 
    THIS SCRIPT MAY AND WILL FAIL UP TO 40 TIMES. JUST KEEP TRYING. 
-5. "./pwn.sh"
-6. "./restore.sh"
-7. Enjoy 10.3.3! 
+6. "./pwn.sh"
+7. "./restore.sh"
+8. Enjoy 10.3.3! 
 
 If the scripts won't run make sure the permissions are set right with 
 
