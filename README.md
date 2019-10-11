@@ -11,7 +11,7 @@ PLEASE DON'T ASK ME IF YOU NEED BLOBS, IT'S ANNOYING
 
 Has been tested on macOS Mojave and Catalina, on both fresh installs and not fresh. 
 
-If you keep failing on restore stage, try creating a new 35gb ish partition and installing a fresh copy of macOS Mojave on it and runinng scripts from start. 
+If you keep failing on restore stage, try creating a new 35gb ish partition and installing a fresh copy of macOS Mojave on it and start from step one. 
 
 If this breaks your phone or macOS install I take absolutely no responibility.
 These scripts have been tested by me and others and should be fine but incase something goes wrong thats on you not me. 
@@ -42,15 +42,11 @@ Then run the scripts in this order:
 2. `"sudo ./install.sh"`
 3. `"./prep.sh"`
 4. Place device into DFU Mode and connect to computer. 
-THIS SCRIPT MAY AND WILL FAIL UP TO 40 TIMES. JUST KEEP TRYING. 
-5. `"./pwn.sh"`
-6. `"./restore.sh"`
-7. Enjoy 10.3.3! 
-
-If the scripts won't run make sure the permissions are set right with 
-
-"chmod +x "name_of_script.sh" without the speechmarks.
+5. THIS SCRIPT MAY/WILL FAIL UP TO 40 TIMES. JUST KEEP TRYING. 
+6. `"./pwn.sh"`
+7. `"./restore.sh"`
+8. Enjoy 10.3.3! 
 
 -------------------------------------------
 
-Enjoy =) Hope this script was useful to you! <3 
+Enjoy =) Hope these scripts were useful to you! <3 
