@@ -19,7 +19,8 @@ A few braincells (VERY IMPORTANT)
 Commonsense (RARE BUT ALSO VERY IMPORTANT)
 
 Thank you to anyone who helped me with testing or anything else! Couldn't have done it myself. 
-Thanks/Credits to: axi0mx, Tihmstar, LinusHenze, alitek12, xerub, s0uthwest, @Vyce_Merculous, @xerusxan, @AyyItzRob123, @BarisUlasCukur, @DaveWijk and anyone else I missed!
+Credits to: axi0mx, Tihmstar, LinusHenze, alitek12, xerub and s0uthwest
+Thanks to: @Vyce_Merculous, @xerusxan, @AyyItzRob123, @BarisUlasCukur, @DaveWijk and anyone else I missed!
 
 
 First make sure you have the 10.3.3 IPSW in the main directory where "prep.sh" and the other scripts are.
