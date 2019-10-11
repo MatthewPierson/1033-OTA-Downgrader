@@ -1,4 +1,5 @@
 #!/bin/bash
+
 clear
 
 echo "**************** Matty's iPhone 5s 10.3.3 OTA Downgrader ****************"
@@ -15,12 +16,12 @@ echo "... Waiting 10 seconds for you to actually read this before continuing ...
 
 sleep 10
 
-echo "Removing old files"
-
+echo "[Log] Removing old files"
+echo ""
 rm -rf ipwndfu_public
 rm -rf shsh/*
 
-echo "Entering PWNDFU Mode"
+echo "[Log] Entering PWNDFU Mode"
 
 git clone https://github.com/LinusHenze/ipwndfu_public.git
 
@@ -42,23 +43,23 @@ python rmsigchks.py
 
 cd ..
 
-echo "Device is in PWNDFU Mode with Sigchcks removed"
-
-echo "Putting device into PWNDREC mode"
+echo "[Log] Device is in PWNDFU Mode with Sigchcks removed"
+echo ""
+echo "[Log] Putting device into PWNDREC mode"
 
 cd tmp/
 
 ../bin/irecovery -f ibss.final
 ../bin/irecovery -f ibec.final
 
-echo "Device is now in PWNDREC mode"
+echo "[Log] Device is now in PWNDREC mode"
 echo ""
 echo "**************** PWNing Completed. Please run restore.sh ****************"
 
 else
 clear
-echo "**************** EXPLOIT FAILED PLEASE ENTER DFU MODE AGAIN AND RUN pwn.sh AGAIN ****************"
-echo "**************** EXPLOIT FAILED PLEASE ENTER DFU MODE AGAIN AND RUN pwn.sh AGAIN ****************"
-echo "**************** EXPLOIT FAILED PLEASE ENTER DFU MODE AGAIN AND RUN pwn.sh AGAIN ****************"
-echo "**************** EXPLOIT FAILED PLEASE ENTER DFU MODE AGAIN AND RUN pwn.sh AGAIN ****************"
+echo "[ERROR] EXPLOIT FAILED PLEASE ENTER DFU MODE AGAIN AND RUN  ./pwn.sh  AGAIN"
+echo "[ERROR] EXPLOIT FAILED PLEASE ENTER DFU MODE AGAIN AND RUN  ./pwn.sh  AGAIN"
+echo "[ERROR] EXPLOIT FAILED PLEASE ENTER DFU MODE AGAIN AND RUN  ./pwn.sh  AGAIN"
+echo "[ERROR] EXPLOIT FAILED PLEASE ENTER DFU MODE AGAIN AND RUN  ./pwn.sh  AGAIN"
 fi

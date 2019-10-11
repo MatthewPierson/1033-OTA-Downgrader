@@ -5,10 +5,11 @@ Please read this before doing ANYTHING
 -------------------------------------------
 
 Only supports the iPhone 5s (6,1 and 6,2).
-YOU DO NOT NEED PREVVOUSLY SAVED BLOBS. PLEASE DON'T ASK ME IF YOU NEED BLOBS IT'S ANNOYING
+YOU DO NOT NEED PREVIOUSLY SAVED BLOBS. 
+PLEASE DON'T ASK ME IF YOU NEED BLOBS, IT'S ANNOYING
 -------------------------------------------
 
-Has been tested on macOS Mojave. Catalina does not work at this stage.
+Has been tested on macOS Mojave. Catalina *might* not work at this stage.
 
 If this breaks your phone or macOS install I take absolutely no responibility.
 These scripts have been tested by me and others and should be fine but incase something goes wrong thats on you not me. 
