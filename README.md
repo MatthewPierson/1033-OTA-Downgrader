@@ -9,7 +9,9 @@ YOU DO NOT NEED PREVIOUSLY SAVED BLOBS.
 PLEASE DON'T ASK ME IF YOU NEED BLOBS, IT'S ANNOYING
 -------------------------------------------
 
-Has been tested on macOS Mojave and Catalina. 
+Has been tested on macOS Mojave and Catalina, on both fresh installs and not fresh. 
+
+If you keep failing on restore stage, try creating a new 35gb ish partition and installing a fresh copy of macOS Mojave on it and runinng scripts from start. 
 
 If this breaks your phone or macOS install I take absolutely no responibility.
 These scripts have been tested by me and others and should be fine but incase something goes wrong thats on you not me. 
