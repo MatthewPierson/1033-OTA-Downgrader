@@ -78,6 +78,12 @@ echo "[Log] Copying libzip"
 
 echo "[Log] Cloning and building other dependencies"
 
+echo "[Log] Cloning ipwndfu_public"
+
+git clone https://github.com/LinusHenze/ipwndfu_public.git
+
+echo "[Log] Cloned ipwndfu_public"
+
 sleep 3
 
 cd ~

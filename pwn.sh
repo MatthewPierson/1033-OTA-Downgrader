@@ -18,12 +18,9 @@ sleep 10
 
 echo "[Log] Removing old files"
 echo ""
-rm -rf ipwndfu_public
 rm -rf shsh/*
 
 echo "[Log] Entering PWNDFU Mode"
-
-git clone https://github.com/LinusHenze/ipwndfu_public.git
 
 cd ipwndfu_public
 
