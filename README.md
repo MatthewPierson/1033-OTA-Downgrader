@@ -9,7 +9,9 @@ Only supports the iPhone 5s (6,1 and 6,2). YOU DO NOT NEED BLOBS PLEASE DON'T AS
 
 Has been tested on macOS Mojave. Catalina does not work at this stage.
 
-If this breaks your phone or macOS install I take absolutely no responibility. These scripts have been tested by me and others and should be fine but incase something goes wrong thats on you not me. 
+If this breaks your phone or macOS install I take absolutely no responibility.
+-------------------------------------------
+These scripts have been tested by me and others and should be fine but incase something goes wrong thats on you not me. 
 -------------------------------------------
 -------------------------------------------
 
