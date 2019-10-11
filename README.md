@@ -1,10 +1,11 @@
-# 10.3.3 OTA Script
+# 10.3.3 OTA Downgrade Script
  Script to downgrade ANY iPhone 5s to 10.3.3 with OTA blobs
  
 Please read this before doing ANYTHING
 -------------------------------------------
 
-Only supports the iPhone 5s (6,1 and 6,2). YOU DO NOT NEED BLOBS PLEASE DON'T ASK ME IF YOU NEED BLOBS
+Only supports the iPhone 5s (6,1 and 6,2).
+YOU DO NOT NEED PREVVOUSLY SAVED BLOBS. PLEASE DON'T ASK ME IF YOU NEED BLOBS IT'S ANNOYING
 -------------------------------------------
 
 Has been tested on macOS Mojave. Catalina does not work at this stage.
