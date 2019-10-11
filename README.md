@@ -5,6 +5,7 @@ Please read this before doing ANYTHING
 -------------------------------------------
 
 Only supports the iPhone 5s (6,1 and 6,2).
+
 YOU DO NOT NEED PREVIOUSLY SAVED BLOBS. 
 PLEASE DON'T ASK ME IF YOU NEED BLOBS, IT'S ANNOYING TO GET THE SAME QUESTION 1000+ TIMES
 -------------------------------------------
@@ -53,7 +54,7 @@ Also make sure you have at least 10 GB free on your SSD/HDD
 
 Then run the scripts in this order:
 1. `"chmod +x *.sh"`
-2. `"sudo ./install.sh"`
+2. `"./install.sh"`
 3. `"./prep.sh"`
 4. Place device into DFU Mode and connect to computer. 
 5. THIS SCRIPT MAY/WILL FAIL UP TO 40 TIMES. JUST KEEP TRYING. 
