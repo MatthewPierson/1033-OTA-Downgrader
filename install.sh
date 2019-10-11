@@ -36,34 +36,6 @@ brew install libzip
 
 brew install openssl
 
-echo "[Log] Cloning and building other dependencies"
-
-cd ~
-
-echo "[Log] Doing libirecovery"
-
-git clone https://github.com/libimobiledevice/libirecovery.git
-
-cd libirecovery/
-
-./autogen.sh && make && sudo make install
-
-cd ~
-
-echo "[Log] Doing libfragmentzip"
-
-git clone https://github.com/tihmstar/libfragmentzip.git
-
-cd libfragmentzip
-
-./autogen.sh && make && sudo make install
-
-clear
-
-echo "[Log] Installed and built dependencies"
-
-
-
 echo "[Log] Creating folders for dylibs"
 
 sudo mkdir /rsu
@@ -103,6 +75,35 @@ sudo cp -a rsu/local/opt/usbmuxd/lib/. /rsu/local/opt/usbmuxd/lib/
 echo "[Log] Copying usbmuxd"
 sudo cp -a rsu/local/opt/libzip/lib/. /rsu/local/opt/libzip/lib/
 echo "[Log] Copying libzip"
+
+echo "[Log] Cloning and building other dependencies"
+
+sleep 3
+
+cd ~
+
+echo "[Log] Doing libirecovery"
+
+git clone https://github.com/libimobiledevice/libirecovery.git
+
+cd libirecovery/
+
+./autogen.sh && make && sudo make install
+
+cd ~
+
+echo "[Log] Doing libfragmentzip"
+
+git clone https://github.com/tihmstar/libfragmentzip.git
+
+cd libfragmentzip
+
+./autogen.sh && make && sudo make install
+
+clear
+
+echo "[Log] Installed and built dependencies"
+
 
 echo "[Log] Installed everything"
 
