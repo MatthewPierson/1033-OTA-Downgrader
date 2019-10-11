@@ -10,6 +10,8 @@ Only supports the iPhone 5s (6,1 and 6,2). YOU DO NOT NEED BLOBS PLEASE DON'T AS
 Has been tested on macOS Mojave. Catalina does not work at this stage.
 
 If this breaks your phone or macOS install I take absolutely no responibility. These scripts have been tested by me and others and should be fine but incase something goes wrong thats on you not me. 
+-------------------------------------------
+-------------------------------------------
 
 The only things you need for this is as follows: 
 An iPhone 5s (6,1 or 6,2)
@@ -22,6 +24,7 @@ Thank you to anyone who helped me with testing or anything else! Couldn't have d
 Credits to: axi0mx, Tihmstar, LinusHenze, alitek12, xerub and s0uthwest
 Thanks to: @Vyce_Merculous, @xerusxan, @AyyItzRob123, @BarisUlasCukur, @DaveWijk and anyone else I missed!
 
+-------------------------------------------
 
 First make sure you have the 10.3.3 IPSW in the main directory where "prep.sh" and the other scripts are.
 
@@ -33,7 +36,15 @@ Then run the scripts in this order:
 2. "sudo ./install_2.sh"
 3. "./prep.sh"
 4. Place device into DFU Mode and connect to computer. 
-   THIS MAY AND WILL FAIL UP TO 40 TIMES. JUST KEEP TRYING. 
+   THIS SCRIPT MAY AND WILL FAIL UP TO 40 TIMES. JUST KEEP TRYING. 
 5. "./pwn.sh"
 6. "./restore.sh"
 7. Enjoy 10.3.3! 
+
+If the scripts won't run make sure the permissions are set right with 
+
+"chmod +x "name_of_script.sh" without the speechmarks.
+
+-------------------------------------------
+
+Enjoy =) Hope this script was useful to you! <3 
