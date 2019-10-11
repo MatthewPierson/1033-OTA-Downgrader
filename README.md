@@ -19,14 +19,23 @@ These scripts have been tested by me and others and should be fine but incase so
 -------------------------------------------
 
 The only things you need for this is as follows: 
+
 The files from this repo
+
 iOS 10.3.3 IPSW from ipsw.me 
+
 All the above in the same folder
+
 An iPhone 5s (6,1 or 6,2)
+
 A Terminal window open
+
 A few braincells (VERY IMPORTANT) 
+
 Commonsense (RARE BUT ALSO VERY IMPORTANT)
+
 Patience!!!
+
 
 -------------------------------------------
 
