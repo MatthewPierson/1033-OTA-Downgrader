@@ -19,37 +19,31 @@ echo "... Waiting ..."
 
 sleep 3
 
-brew uninstall --ignore-dependencies usbmuxd
-
-brew uninstall --ignore-dependencies libimobiledevice
-
-brew install --HEAD usbmuxd
-
-brew install --HEAD libimobiledevice
-
-brew install libzip
-
-brew install openssl
 
 brew install wget
 
-cd ~
+echo "... Creating folders for dylibs ..."
 
-git clone https://github.com/libimobiledevice/libirecovery.git
+sudo mkdir /rsu
+sudo mkdir /rsu/lib
+sudo mkdir /rsu/local/lib
+sudo mkdir /rsu/local/opt
+sudo mkdir /rsu/local/opt/openssl
+sudo mkdir /rsu/local/opt/openssl/lib
+sudo mkdir /rsu/local/opt/usbmuxd
+sudo mkdir /rsu/local/opt/usbmuxd/lib
+sudo mkdir /rsu/local/opt/libzip
+sudo mkdir /rsu/local/opt/libzip/lib
 
-cd libirecovery/
+echo "... Moving dylibs into place ..."
 
-./autogen.sh && make && sudo make install
+sudo cp rsu/lib/* /rsu/lib/
+sudo cp rsu/local/lib/* /rsu/local/lib/
+sudo cp rsu/local/opt/openssl/lib/* /rsu/local/opt/openssl/lib/
+sudo cp rsu/local/opt/usbmuxd/lib/* /rsu/local/opt/usbmuxd/lib/
+sudo cp rsu/local/opt/libzip/lib/* /rsu/local/opt/libzip/lib/
 
-cd ~
-
-git clone https://github.com/tihmstar/libfragmentzip.git
-
-cd libfragmentzip
-
-./autogen.sh && make && sudo make install
-
-echo "... Installed and built dependencies ..."
+echo "... Installed everything ..."
 
 
 echo "... Done ..."

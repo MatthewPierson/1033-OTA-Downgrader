@@ -70,6 +70,10 @@ rm -rf tmp/futurerestore
 
 mv tmp/futurerestore_new bin/futurerestore
 
+bin/bspatch bin/futurerestore tmp/futurerestore_final patch/futurerestore_2.patch
+
+mv tmp/futurerestore_final bin/futurerestore
+
 chmod +x bin/*
 echo "Files patched"
 
