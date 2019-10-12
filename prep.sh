@@ -58,7 +58,14 @@ echo "[Log] What model iPad are you using? E.G iPad4,4 or iPad4,1"
 read model
 fi
 
-if [ $model == iPad4,1 ] || [ $model == iPad4,2 ] || [ $model == iPad4,3 ] || [ $model == iPad4,4 ] || [ $model == iPad4,5 ];
+if [ $idevice == iPhone ] || [ $idevice == iphone ];
+then
+echo "[Log] What model iPhone are you using? E.G iPhone6,1 or iPhone6,2"
+
+read model
+fi
+
+if [ $model == iPad4,1 ] || [ $model == iPad4,2 ] || [ $model == iPad4,3 ] || [ $model == iPad4,4 ] || [ $model == iPad4,5 ] || [ $model == iPhone6,1 ] || [ $model == iPhone6,2 ];
 
 then
 
