@@ -84,18 +84,12 @@ if [ $model == iPad4,1 ] || [ $model == iPad4,2 ] || [ $model == iPad4,3 ];
 then
 
 ipadmodel="ipad4"
+fi
 
-
-elif  [ $model == iPad4,4 ] || [ $model == iPad4,5 ];
+if  [ $model == iPad4,4 ] || [ $model == iPad4,5 ];
 then
 
 ipadmodel="ipad4b"
-
-else
-
-echo "[ERROR] Unknown model, Exiting..."
-
-exit
 
 fi
 
