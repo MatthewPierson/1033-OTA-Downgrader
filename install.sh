@@ -80,7 +80,7 @@ echo "[Log] Cloning and building other dependencies"
 
 echo "[Log] Cloning ipwndfu_public"
 
-git clone https://github.com/LinusHenze/ipwndfu_public.git
+git clone https://github.com/MatthewPierson/ipwndfu_public.git
 
 echo "[Log] Cloned ipwndfu_public"
 
