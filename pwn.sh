@@ -11,10 +11,15 @@ echo ""
 echo "There is no current way around this, it's just the nature of the exploit on the 5s"
 echo ""
 echo "Thanks to Merc (@Vyce_Merculous) for helping me fix stuff with this script!"
-echo ""
-echo "... Waiting 10 seconds for you to actually read this before continuing ..."
 
-sleep 10
+if [ ! -f read-pwn-message ]; then
+  echo ""
+  echo "... Waiting 10 seconds for you to actually read this before continuing ..."
+  
+  sleep 10
+  
+  touch read-pwn-message
+fi
 
 echo "[Log] Removing old files"
 echo ""

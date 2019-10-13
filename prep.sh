@@ -18,7 +18,7 @@ rm -rf 10.3.3.custom.ipsw
 
 echo "[Log] Downloading programs from S0uthwest's Github releases"
 echo "[Log] Downloading igetnonce"
-wget https://github.com/s0uthwest/igetnonce/releases/download/14/igetnonce_macOS_v14.zip -q --show-progress
+wget -O igetnonce_macOS_v14.zip https://github.com/s0uthwest/igetnonce/releases/download/14/igetnonce_macOS_v14.zip -q --show-progress
 unzip igetnonce_macOS_v14.zip igetnonce
 mv igetnonce bin/igetnonce
 rm -rf igetnonce_macOS_v14.zip
@@ -27,7 +27,7 @@ echo "[Log] Done igetnonce"
 
 echo "[Log] Downloading tsschecker"
 
-wget https://github.com/s0uthwest/tsschecker/releases/download/355/tsschecker_macOS_v355.zip -q --show-progress
+wget -O tsschecker_macOS_v355.zip https://github.com/s0uthwest/tsschecker/releases/download/355/tsschecker_macOS_v355.zip -q --show-progress
 unzip tsschecker_macOS_v355.zip
 mv tsschecker bin/tsschecker
 rm -rf tsschecker_macOS_v355.zip
@@ -36,7 +36,7 @@ echo "[Log] Done tsschecker"
 
 echo "[Log] Downloading futurerestore"
 
-wget https://github.com/s0uthwest/futurerestore/releases/download/245/futurerestore_macOS_v245.zip -q --show-progress
+wget -O futurerestore_macOS_v245.zip https://github.com/s0uthwest/futurerestore/releases/download/245/futurerestore_macOS_v245.zip -q --show-progress
 
 unzip futurerestore_macOS_v245.zip futurerestore
 
@@ -58,7 +58,14 @@ echo "[Log] What model iPad are you using? E.G iPad4,4 or iPad4,1"
 read model
 fi
 
-if [ $model == iPad4,1 ] || [ $model == iPad4,2 ] || [ $model == iPad4,3 ] || [ $model == iPad4,4 ] || [ $model == iPad4,5 ];
+if [ $idevice == iPhone ] || [ $idevice == iphone ];
+then
+echo "[Log] What model iPhone are you using? E.G iPhone6,1 or iPhone6,2"
+
+read model
+fi
+
+if [ $model == iPad4,1 ] || [ $model == iPad4,2 ] || [ $model == iPad4,3 ] || [ $model == iPad4,4 ] || [ $model == iPad4,5 ] || [ $model == iPhone6,1 ] || [ $model == iPhone6,2 ];
 
 then
 
@@ -77,18 +84,12 @@ if [ $model == iPad4,1 ] || [ $model == iPad4,2 ] || [ $model == iPad4,3 ];
 then
 
 ipadmodel="ipad4"
+fi
 
-
-elif  [ $model == iPad4,4 ] || [ $model == iPad4,5 ];
+if  [ $model == iPad4,4 ] || [ $model == iPad4,5 ];
 then
 
 ipadmodel="ipad4b"
-
-else
-
-echo "[ERROR] Unknown model, Exiting..."
-
-exit
 
 fi
 
