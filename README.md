@@ -10,7 +10,9 @@ YOU DO NOT NEED PREVIOUSLY SAVED BLOBS.
 PLEASE DON'T ASK ME IF YOU NEED BLOBS, IT'S ANNOYING TO GET THE SAME QUESTION 1000+ TIMES
 -------------------------------------------
 
-Has been tested on macOS Mojave and Catalina, on both fresh installs and not fresh. Would reccomend Mojave however as some people run into issues with Catalina.
+Has been tested on macOS Mojave, on both fresh installs and not fresh. Would not reccomend Catalina (at this stage) as most users run into issues. 
+
+So macOS support is only Mojave currently. No Catalina, no High Sierra and no Sierra or lower. If it works for you on an unsupported version then great but offically only Mojave is supported. 
 
 If you keep failing on restore stage, try creating a new 35gb ish partition and installing a fresh copy of macOS Mojave on it and start from step one. 
 
