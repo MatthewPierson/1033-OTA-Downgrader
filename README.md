@@ -1,72 +1,39 @@
 # 10.3.3 OTA Downgrade Script
- Script to downgrade ANY iPhone 5s, iPad Air and (almost any) iPad Mini 2 to 10.3.3 with OTA blobs
+Script to downgrade any device that has iOS 10.3.3 OTA signed.
  
 Please read this before doing ANYTHING
 -------------------------------------------
 
-Only supports the iPhone 5s (6,1 and 6,2), iPad Air (iPad4,1 iPad4,2 and iPad4,3) and iPad Mini 2 (iPad4,4 and iPad4,5). No iPad4,6 support ever because it doesn't have 10.3.3 OTA signed as it shipped with 7.1 not 7.0
+Only supports the iPhone 5s (6,1 and 6,2), iPad Air (iPad4,1 iPad4,2 and iPad4,3) and iPad Mini 2 (iPad4,4 and iPad4,5). No iPad4,6 support ever because it doesn't have 10.3.3 OTA signed as it shipped with 7.1 not 7.0.
 
-YOU DO NOT NEED PREVIOUSLY SAVED BLOBS. 
-PLEASE DON'T ASK ME IF YOU NEED BLOBS, IT'S ANNOYING TO GET THE SAME QUESTION 1000+ TIMES
+Has been tested on macOS Mojave and Catalina, on both fresh installs and not fresh. Some MacOS versions have better success than others, we cannot fix this.
+
+If this breaks your phone or macOS install neither Matty or Merc take absolutely no responsibility.
+This script has been tested by Matty, Merc, and others and should be fine but in case something goes wrong, that's on you not us. 
 -------------------------------------------
 
-Has been tested on macOS Mojave and Catalina, on both fresh installs and not fresh. Would reccomend Mojave however as some people run into issues with Catalina.
-
-If you keep failing on restore stage, try creating a new 35gb ish partition and installing a fresh copy of macOS Mojave on it and start from step one. 
-
-If this breaks your phone or macOS install I take absolutely no responibility.
-These scripts have been tested by me and others and should be fine but incase something goes wrong thats on you not me. 
--------------------------------------------
+No verbose boot, custom logo's, or anything else will be added. This will downgrade your device to 10.3.3 and that's it.
 -------------------------------------------
 
-Currently custom boot-args/bootlogo's/verbose restore or boot are not supported because I don't care or have time to get them implemented.
+The only things you need for this to work are: 
 
--------------------------------------------
-The only things you need for this are as follows: 
-
-The files from this repo
-
-iOS 10.3.3 IPSW from ipsw.me 
-
-All the above in the same folder
-
-An iPhone 5s (6,1 or 6,2) or iPad Air (iPad4,1 iPad4,2 and iPad4,3) or iPad Mini 2 (iPad4,4 and iPad4,5)
-
-A Terminal window open
+An iOS 10.3.3 ipsw
 
 A few braincells (VERY IMPORTANT) 
 
 Commonsense (RARE BUT ALSO VERY IMPORTANT)
 
 Patience!!!
-
-
 -------------------------------------------
 
-Thank you to anyone who helped me with testing or anything else! Couldn't have done it myself. 
+Thank you to anyone who helped us with testing or anything else! Couldn't have done it without the help of everyone who contributed. 
 
 Credits to: axi0mx, Tihmstar, LinusHenze, alitek12, xerub and s0uthwest
 
 Thanks to: @Vyce_Merculous, @xerusxan, @AyyItzRob123, @BarisUlasCukur, @DaveWijk, @melvin_zill and anyone else I missed!
-
 -------------------------------------------
 
-First make sure you have the 10.3.3 IPSW in the main directory where "prep.sh" and the other scripts are.
+If you have any questions, either open an issue here, message Matty(@mosk_i) or Merc (@Vyce_Merculous) on Twitter, or comment on the reddit post.
 
-Also make sure you have at least 10 GB free on your SSD/HDD
-
-Then run the scripts in this order:
-1. `"chmod +x *.sh"`
-2. `"./install.sh"`
-3. `"./prep.sh"`
-4. Place device into DFU Mode and connect to computer. 
-5. THIS SCRIPT MAY/WILL FAIL UP TO 40 TIMES. JUST KEEP TRYING. 
-6. `"./pwn.sh"`
-7. `"./restore.sh"`
-8. Enjoy 10.3.3! 
-
--------------------------------------------
-
-Any questions either open an issue here, message/@me on twitter or comment on the reddit post.
-
-Enjoy =) Hope these scripts were useful to you! <3 
+Also just note, just because there's something not used in the project, do not send us thousands of messages asking us to add whatever you want.
+Do it yourselves, its not hard, at all. Just look things up, the Internet is a thing.

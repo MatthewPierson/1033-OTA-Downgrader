@@ -1,210 +1,51 @@
 #!/bin/bash
-clear
 
-echo "**************** Matty's iPhone 5s 10.3.3 OTA Downgrader ****************"
+# This is prepping all of the files, and grabbing shsh blobs
 
-echo "[Log] Removing files from previous runs"
-
-rm -rf tmp/*
-rm -rf shsh/*
-rm -rf iPhone_4.0_64bit_10.3.3_14G60_Restore
-rm -rf iPad_64bit_10.3.3_14G60_Restore
-rm -rf iPad_64bit_10.3.3_14G60_Restore
-rm -rf 10.3.3.custom
-rm -rf bin/tss*
-rm -rf bin/fu*
-rm -rf bin/ig*
-rm -rf 10.3.3.custom.ipsw
-
-echo "[Log] Downloading programs from S0uthwest's Github releases"
-echo "[Log] Downloading igetnonce"
-wget https://github.com/s0uthwest/igetnonce/releases/download/14/igetnonce_macOS_v14.zip -q --show-progress
-unzip igetnonce_macOS_v14.zip igetnonce
-mv igetnonce bin/igetnonce
-rm -rf igetnonce_macOS_v14.zip
-
-echo "[Log] Done igetnonce"
-
-echo "[Log] Downloading tsschecker"
-
-wget https://github.com/s0uthwest/tsschecker/releases/download/355/tsschecker_macOS_v355.zip -q --show-progress
-unzip tsschecker_macOS_v355.zip
-mv tsschecker bin/tsschecker
-rm -rf tsschecker_macOS_v355.zip
-
-echo "[Log] Done tsschecker"
-
-echo "[Log] Downloading futurerestore"
-
-wget https://github.com/s0uthwest/futurerestore/releases/download/245/futurerestore_macOS_v245.zip -q --show-progress
-
-unzip futurerestore_macOS_v245.zip futurerestore
-
-mv futurerestore bin/futurerestore
-
-rm -rf futurerestore_macOS_v245.zip
-
-echo "[Log] Done fututrerestore"
-
-echo "[Log] Are you downgrading an iPhone or an iPad?"
-
-read idevice
-
-if [ $idevice == iPad ] || [ $idevice == ipad ];
-then
-
-echo "[Log] What model iPad are you using? E.G iPad4,4 or iPad4,1"
-
-read model
-fi
-
-if [ $idevice == iPhone ] || [ $idevice == iphone ];
-then
-echo "[Log] What model iPhone are you using? E.G iPhone6,1 or iPhone6,2"
-
-read model
-fi
-
-if [ $model == iPad4,1 ] || [ $model == iPad4,2 ] || [ $model == iPad4,3 ] || [ $model == iPad4,4 ] || [ $model == iPad4,5 ] || [ $model == iPhone6,1 ] || [ $model == iPhone6,2 ];
-
-then
-
-echo "[Log] Supported model!"
-
+if [ $1 ]; then
+echo "Killing iTunes as this will be quite annoying with what we are going to do."
+killall iTunes && killall iTunesHelper
+mkdir -p ipsw
+unzip -d ipsw $1
+mv -v ipsw/Firmware/dfu/*.iphone6*.im4p .
+cp -rv ipsw/Firmware/Mav7Mav8-7.60.00.Release.bbfw .
+cp -rv ipsw/Firmware/all_flash/sep-firmware.n51.RELEASE.im4p .
+img4 -i iBSS.iphone6.RELEASE.im4p -o iBSS.decrypted -k f2aa35f6e27c409fd57e9b711f416cfe599d9b18bc51d93f2385fa4e83539a2eec955fce5f4ae960b252583fcbebfe75 -D
+img4 -i iBEC.iphone6.RELEASE.im4p -o iBEC.decrypted -k 75a06e85e2d9835827334738bb84ce7315c61c585d30ab07497f68aee0a64c433e4b1183abde4cfd91c185b9a70ab91a -D
+img4tool -e -o iBSS.raw iBSS.decrypted
+img4tool -e -o iBEC.raw iBEC.decrypted
+./iBoot64Patcher iBSS.raw iBSS.prepatched
+./iBoot64Patcher iBEC.raw iBEC.prepatched
+img4tool -p iBSS.im4p --tag ibss --info checkm8 iBSS.prepatched
+img4tool -p iBEC.im4p --tag ibec --info checkm8 iBEC.prepatched
+irecovery -q
+echo "Please copy your ecid and enter your device type. For example, iPhone6,1."
+read device
+echo "Please enter your ecid."
+read ecid
+mkdir -p shsh
+tsschecker -d $device -i 10.3.3 -o -e $ecid -s --save-path shsh
+mv -v shsh/*.shsh* shsh/stitch.shsh2
+img4tool -p iBSS.im4p -c iBSS.img4 -s shsh/stitch.shsh2
+img4tool -p iBEC.im4p -c iBEC.img4 -s shsh/stitch.shsh2
+cp -v iBSS.img4 ipsw/Firmware/dfu/iBSS.iphone6.RELEASE.im4p
+cp -v iBEC.img4 ipsw/Firmware/dfu/iBEC.iphone6.RELEASE.im4p
+cd ipsw
+zip ../downgrade.ipsw -r9 *
+cd ..
+echo "yeet" >> dummy_file
+python ipwndfu_public/rmsigchks.py
+irecovery -f dummy_file
+irecovery -f iBSS.img4
+irecovery -f iBEC.img4
+irecovery -q
+echo "Please copy your apnonce and enter it in here. Use the nonce from the line containing NONC:"
+read apnonce
+tsschecker -d $device -i 10.3.3 -o -e $ecid --apnonce $apnonce -s
+mv -v *.shsh* shsh/apnonce.shsh2
+echo "Cleaning up!"
+rm -rfv ipsw dummy_file *.decrypted iB*.im4p *.prepatched *.raw
+echo "Done! Please execute the ./restore.sh script. Just one more step and you'll be able to downgrade!"
 else
-
-echo "[ERROR] Unsupported model or model was entered incorrectly, Exiting..."
-
-exit
-
+echo "Usage: $0 PathToIpsw"
 fi
-
-
-if [ $model == iPad4,1 ] || [ $model == iPad4,2 ] || [ $model == iPad4,3 ];
-then
-
-ipadmodel="ipad4"
-fi
-
-if  [ $model == iPad4,4 ] || [ $model == iPad4,5 ];
-then
-
-ipadmodel="ipad4b"
-
-fi
-
-
-if [ $idevice == iPad ] || [ $idevice == ipad ];
-then
-
-echo "[Log] iPad chosen"
-
-echo "[Log] Unzipping IPSW"
-
-unzip iPad_64bit_10.3.3_14G60_Restore.ipsw -d iPad_4.0_64bit_10.3.3_14G60_Restore/
-
-echo "[Log] IPSW unzipped"
-
-cp iPad_4.0_64bit_10.3.3_14G60_Restore/Firmware/dfu/iBEC."$ipadmodel".RELEASE.im4p tmp/iBEC."$ipadmodel".RELEASE.im4p
-
-echo "[Log] Copying iBEC"
-
-cp iPad_4.0_64bit_10.3.3_14G60_Restore/Firmware/dfu/iBSS."$ipadmodel".RELEASE.im4p tmp/iBSS."$ipadmodel".RELEASE.im4p
-
-echo "[Log] Copying iBSS"
-
-echo "[Log] Patching files"
-
-chmod +x bin/*
-
-bin/bspatch tmp/iBSS."$ipadmodel".RELEASE.im4p tmp/ibss.final patch/ibss_"$ipadmodel".patch
-
-bin/bspatch tmp/iBEC."$ipadmodel".RELEASE.im4p tmp/ibec.final patch/ibec_"$ipadmodel".patch
-
-
-elif [ $idevice == iPhone ] || [ $idevice == iphone ];
-
-then
-
-echo "[Log] Unzipping IPSW"
-
-unzip iPhone_4.0_64bit_10.3.3_14G60_Restore.ipsw -d iPhone_4.0_64bit_10.3.3_14G60_Restore/
-
-echo "[Log] IPSW unzipped"
-
-cp iPhone_4.0_64bit_10.3.3_14G60_Restore/Firmware/dfu/iBEC.iphone6.RELEASE.im4p tmp/iBEC.iphone6.RELEASE.im4p
-
-echo "[Log] Copying iBEC"
-
-cp iPhone_4.0_64bit_10.3.3_14G60_Restore/Firmware/dfu/iBSS.iphone6.RELEASE.im4p tmp/iBSS.iphone6.RELEASE.im4p
-
-echo "[Log] Copying iBSS"
-
-echo "[Log] Patching files"
-
-chmod +x bin/*
-
-bin/bspatch tmp/iBSS.iphone6.RELEASE.im4p tmp/ibss.final patch/ibss.patch
-
-bin/bspatch tmp/iBEC.iphone6.RELEASE.im4p tmp/ibec.final patch/ibec.patch
-
-else
-echo "[ERROR] Unknown idevice, Exiting..."
-exit
-fi
-
-bin/bspatch bin/futurerestore tmp/futurerestore_new patch/futurerestore.patch
-
-rm -rf tmp/futurerestore
-
-mv tmp/futurerestore_new bin/futurerestore
-
-bin/bspatch bin/futurerestore tmp/futurerestore_final patch/futurerestore_2.patch
-
-mv tmp/futurerestore_final bin/futurerestore
-
-chmod +x bin/*
-
-echo "[Log] Making sure permissions are set for binaries"
-
-echo "[Log] Files patched"
-
-echo "[Log] Creating new IPSW"
-
-if [ $idevice == iPhone ] || [ $idevice == iphone ];
-then
-
-rm -rf iPhone_4.0_64bit_10.3.3_14G60_Restore/Firmware/dfu/iBSS.iphone6.RELEASE.im4p
-rm -rf iPhone_4.0_64bit_10.3.3_14G60_Restore/Firmware/dfu/iBEC.iphone6.RELEASE.im4p
-
-cp tmp/ibss.final iPhone_4.0_64bit_10.3.3_14G60_Restore/Firmware/dfu/iBSS.iphone6.RELEASE.im4p
-
-cp tmp/ibec.final iPhone_4.0_64bit_10.3.3_14G60_Restore/Firmware/dfu/iBEC.iphone6.RELEASE.im4p
-
-mv iPhone_4.0_64bit_10.3.3_14G60_Restore 10.3.3.custom
-cd 10.3.3.custom
-zip ../10.3.3.custom.ipsw -r0 *
-
-elif [ $idevice == iPad ] || [ $idevice == ipad ];
-then
-
-rm -rf iPad_4.0_64bit_10.3.3_14G60_Restore/Firmware/dfu/iBSS."$ipadmodel".RELEASE.im4p
-rm -rf iPad_4.0_64bit_10.3.3_14G60_Restore/Firmware/dfu/iBEC."$ipadmodel".RELEASE.im4p
-
-cp tmp/ibss.final iPad_4.0_64bit_10.3.3_14G60_Restore/Firmware/dfu/iBSS."$ipadmodel".RELEASE.im4p
-
-cp tmp/ibec.final iPad_4.0_64bit_10.3.3_14G60_Restore/Firmware/dfu/iBEC."$ipadmodel".RELEASE.im4p
-
-
-mv iPad_4.0_64bit_10.3.3_14G60_Restore 10.3.3.custom
-cd 10.3.3.custom
-zip ../10.3.3.custom.ipsw -r0 *
-
-else
-echo "You shouldnt have ever gotten this error lmao try again"
-exit
-
-fi
-echo "[Log] Preperations complete"
-echo "**************** Modified IPSW created successfully ****************"
-echo "**************** Prep Completed. Please run pwn.sh ****************"

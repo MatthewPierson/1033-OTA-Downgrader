@@ -1,1 +1,13 @@
 .DS_Store
+build
+ltmain.sh
+ipwndfu_public
+*.ipsw
+iBEC*
+iBSS*
+ipsw
+shsh
+*.shsh2
+*.bbfw
+downgrade
+*.im4p
