@@ -116,6 +116,7 @@ fi
 echo "[Log] SEP and Baseband copied"
 echo ""
 
+RESTORE_RESULT=
 if [ $device == iPhone6,1 ] || [ $device == iPhone6,2 ];
 then
 echo "[Log] Copying SEP and Baseband"
@@ -129,6 +130,7 @@ rm -rf 10.3.3.custom
 echo "[Log] Clean up done"
 echo "[Log] Starting futurerestore"
 bin/futurerestore -t shsh/OTA.shsh -s restore/sep-firmware."$device".RELEASE.im4p -m restore/BuildManifest_"$device"_1033_OTA.plist -b restore/Baseband.bbfw -p restore/BuildManifest_"$device"_1033_OTA.plist 10.3.3.custom.ipsw
+RESTORE_RESULT=$?
 fi
 if [ $device == iPad4,2 ] || [ $device == iPad4,3 ] || [ $device == iPad4,5 ];
 
@@ -138,6 +140,7 @@ rm -rf 10.3.3.custom
 echo "[Log] Clean up done"
 echo "[Log] Starting futurerestore"
 bin/futurerestore -t shsh/OTA.shsh -s restore/sep-firmware."$device".RELEASE.im4p -m restore/BuildManifest_"$device"_1033_OTA.plist -b restore/Baseband.bbfw -p restore/BuildManifest_"$device"_1033_OTA.plist 10.3.3.custom.ipsw
+RESTORE_RESULT=$?
 fi
 if [ $device == iPad4,1 ] || [ $device == iPad4,4 ];
 then
@@ -146,9 +149,23 @@ rm -rf 10.3.3.custom
 echo "[Log] Clean up done"
 echo "[Log] Starting futurerestore"
 bin/futurerestore -t shsh/OTA.shsh -s restore/sep-firmware."$device".RELEASE.im4p -m restore/BuildManifest_"$device"_1033_OTA.plist --no-baseband 10.3.3.custom.ipsw
+RESTORE_RESULT=$?
 fi
 
-echo "[Log] Futurerestoring complete"
-echo ""
-echo "**************** Downgrade complete! Enjoy 10.3.3 =) ****************"
-echo "**************** Follow me on twitter @mosk_i for help/updates ******"
+if [ $RESTORE_RESULT -eq 0 ]; then
+  echo "[Log] Futurerestoring complete"
+  echo ""
+  echo "**************** Downgrade complete! Enjoy 10.3.3 =) ****************"
+  echo "**************** Follow me on twitter @mosk_i for help/updates ******"
+else
+  echo "[Log] Futurerestore failed"
+  
+  echo "[Log] Exiting recovery mode"
+  bin/futurerestore --exit-recovery
+  
+  echo ""
+  echo "[ERROR] FUTURERESTORE FAILED"
+  echo "[ERROR] FUTURERESTORE FAILED"
+  echo "[ERROR] FUTURERESTORE FAILED"
+  echo "[ERROR] FUTURERESTORE FAILED"
+fi
