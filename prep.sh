@@ -2,7 +2,21 @@
 
 # This is prepping all of the files, and grabbing shsh blobs
 
+#TODO Add support for
+# iPhone6,2
+
+# iPad4,1 NOTE: iPad's just need iBEC patched
+# iPad4,2
+# iPad4,3
+# iPad4,4
+# iPad4,5
+
+# rd=md0 nand-enable-reformat=1 -progress -restore
+
+# Some how inject this for boot-args availability: -v debug=0x14e serial=3 
+
 if [ $1 ]; then
+rm -rfv ipsw dummy_file *.decrypted *.im4p *.prepatched *.raw *.img4 shsh downgrade.ipsw *.restore
 echo "Killing iTunes as this will be quite annoying with what we are going to do."
 killall iTunes && killall iTunesHelper
 mkdir -p ipsw
@@ -24,7 +38,7 @@ read device
 echo "Please enter your ecid."
 read ecid
 mkdir -p shsh
-tsschecker -d $device -i 10.3.3 -o -e $ecid -s --save-path shsh
+tsschecker -d $device -i 10.3.3 -o -m manifests/BuildManifest_iPhone6,1_1033_OTA.plist -e $ecid -s --save-path shsh
 mv -v shsh/*.shsh* shsh/stitch.shsh2
 img4tool -p iBSS.im4p -c iBSS.img4 -s shsh/stitch.shsh2
 img4tool -p iBEC.im4p -c iBEC.img4 -s shsh/stitch.shsh2
@@ -33,7 +47,7 @@ cp -v iBEC.img4 ipsw/Firmware/dfu/iBEC.iphone6.RELEASE.im4p
 cd ipsw
 zip ../downgrade.ipsw -r9 *
 cd ..
-echo "yeet" >> dummy_file
+echo "checkm8" >> dummy_file
 python ipwndfu_public/rmsigchks.py
 irecovery -f dummy_file
 irecovery -f iBSS.img4
@@ -41,11 +55,18 @@ irecovery -f iBEC.img4
 irecovery -q
 echo "Please copy your apnonce and enter it in here. Use the nonce from the line containing NONC:"
 read apnonce
-tsschecker -d $device -i 10.3.3 -o -e $ecid --apnonce $apnonce -s
+tsschecker -d $device -i 10.3.3 -o -m manifests/BuildManifest_iPhone6,1_1033_OTA.plist -e $ecid --apnonce $apnonce -s
 mv -v *.shsh* shsh/apnonce.shsh2
-echo "Cleaning up!"
-rm -rfv ipsw dummy_file *.decrypted iB*.im4p *.prepatched *.raw
 echo "Done! Please execute the ./restore.sh script. Just one more step and you'll be able to downgrade!"
 else
 echo "Usage: $0 PathToIpsw"
 fi
+
+#if [ $device == iPad4,1 ] || [ $device == iPad4,2 ] || [ $device == iPad4,4 ] || [ $device == iPad4,5 ] || [ $device == iPhone6,1 ] || [ $device == iPhone6,2 ];
+#then
+#bin/tsschecker -e "$ecid" -d "$device" -s -o -i 9.9.10.3.3 --buildid 14G60 -m restore/BuildManifest_"$device"_1033_OTA.plist --save-path shsh/ --apnonce "$nonce"
+#fi
+#if [ $device == iPad4,3 ];
+#then
+#bin/tsschecker -e "$ecid" -d "$device" --boardconfig j73AP -s -o -i 9.9.10.3.3 --buildid 14G60 -m restore/BuildManifest_"$device"_1033_OTA.plist --save-path shsh/ --apnonce "$nonce"
+#fi
