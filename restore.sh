@@ -191,6 +191,6 @@ if [ "$#" == 3 ]; then
 		fi
 	fi
 else
-	echo "Usage: $0 <device> <ecid> PathToIpsw"
+	echo "Usage: $0 <device> <ecid> PathToIpsw (ipsw must be in this directory)"
 	echo "Example: $0 iPhone6,1 <ecid> iPhone_4.0_64bit_10.3.3_14G60_Restore.ipsw"
 fi
