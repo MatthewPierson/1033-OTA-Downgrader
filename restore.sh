@@ -2,6 +2,11 @@
 
 # $0 <exec> $1 <device> $2 <ecid> $3 <ipsw>
 
+if [ ! "/usr/local/bin/brew" ]; then
+	echo "OOOOF, brew is not installed? Installing..."
+	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
 if [ "$#" == 3 ]; then
 	echo "[+] Installing dependencies"
 	brew install libtool automake lsusb
