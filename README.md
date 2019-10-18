@@ -4,7 +4,7 @@ Script to downgrade any device that has iOS 10.3.3 OTA signed.
 Please read this before doing ANYTHING
 -------------------------------------------
 
-Yes, this may not work out of the box for everyone. Please note, if you are experienced with compiling things and using package managers, this will be an easy fix. For everyone else, please post any issues on the issues page and I will try to resolve any issues that are present. But just note, I'll add support for every device and add info about needed dependencies outside this project. Also, please do not change a single thing unless you absolutely know what you're doing. Just let the script do its thing.
+Yes, this may not work out of the box for everyone. Please note, if you are experienced with compiling things and using package managers, this will be an easy fix. For everyone else, please post any issues on the issues page and I will try to resolve any issues that are present. Also, please do not change a single thing unless you absolutely know what you're doing. Just let the script do its thing.
 
 Only supports the iPhone 5s (6,1 and 6,2), iPad Air (iPad4,1 iPad4,2 and iPad4,3) and iPad Mini 2 (iPad4,4 and iPad4,5). No iPad4,6 support ever because it doesn't have 10.3.3 OTA signed as it shipped with 7.1 not 7.0.
 
@@ -12,7 +12,6 @@ Has been tested on macOS Mojave and Catalina, on both fresh installs and not fre
 
 If this breaks your phone or macOS install neither Matty or Merc take absolutely no responsibility.
 This script has been tested by Matty, Merc, and others and should be fine but in case something goes wrong, that's on you not us. 
--------------------------------------------
 
 No verbose boot, custom logo's, or anything else will be added. This will downgrade your device to 10.3.3 and that's it.
 -------------------------------------------
@@ -26,6 +25,14 @@ A few braincells (VERY IMPORTANT)
 Commonsense (RARE BUT ALSO VERY IMPORTANT)
 
 Patience!!!
+-------------------------------------------
+
+How to downgrade:
+	1. Download your iOS 10.3.3 ipsw.
+	2. Run restore.sh as so, with also changing the arguments (don't add the quotes) with what you have: ./restore.sh "device" "ecid" "pathtoipsw"
+	3. Wait
+	4. Install your favorite iOS 10.x jailbreak
+	5. Give feedback (issues, a thank you, anything that should be added to this)
 -------------------------------------------
 
 Thank you to anyone who helped us with testing or anything else! Couldn't have done it without the help of everyone who contributed. 
