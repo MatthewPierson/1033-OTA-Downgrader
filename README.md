@@ -13,11 +13,10 @@ Has been tested on macOS Mojave and Catalina, on both fresh installs and not fre
 If this breaks your phone or macOS install neither Matty or Merc take absolutely no responsibility.
 This script has been tested by Matty, Merc, and others and should be fine but in case something goes wrong, that's on you not us. 
 
-No verbose boot, custom logo's, or anything else will be added. This will downgrade your device to 10.3.3 and that's it.
--------------------------------------------
+No verbose boot, custom logo's, or anything else will be added as of now, maybe later on. This will only downgrade your device to 10.3.3 and that's it.
 
 The only things you need for this to work are: 
-
+-------------------------------------------
 An iOS 10.3.3 ipsw
 
 A few braincells (VERY IMPORTANT) 
@@ -25,24 +24,32 @@ A few braincells (VERY IMPORTANT)
 Commonsense (RARE BUT ALSO VERY IMPORTANT)
 
 Patience!!!
--------------------------------------------
 
 How to downgrade:
-	1. Download your iOS 10.3.3 ipsw.
-	2. Run restore.sh as so, with also changing the arguments (don't add the quotes) with what you have: ./restore.sh "device" "ecid" "pathtoipsw"
-	3. Wait
-	4. Install your favorite iOS 10.x jailbreak
-	5. Give feedback (issues, a thank you, anything that should be added to this)
+-------------------------------------------
+
+1. Download your iOS 10.3.3 ipsw and make sure it's in your current directory.
+
+2. Run restore.sh as so, with also changing the arguments (don't add the quotes) with what you have: ./restore.sh "device" "ecid" "pathtoipsw"
+
+3. Wait
+
+4. Install your favorite iOS 10.x jailbreak, or with checkra1n, when its out (and supports iOS 10).
+
+5. Give feedback (issues, a thank you, anything that should be added to this)
+
+Credits: 
 -------------------------------------------
 
 Thank you to anyone who helped us with testing or anything else! Couldn't have done it without the help of everyone who contributed. 
 
-Credits to: axi0mx, Tihmstar, LinusHenze, alitek12, xerub and s0uthwest
+Credits to: axi0mx, Tihmstar, LinusHenze, alitek12, xerub and s0uthwest.
 
-Thanks to: @Vyce_Merculous, @xerusxan, @AyyItzRob123, @BarisUlasCukur, @DaveWijk, @melvin_zill and anyone else I missed!
--------------------------------------------
+Thanks to: @Vyce\_Merculous, @xerusxan, @AyyItzRob123, @BarisUlasCukur, @DaveWijk, @melvin\_zill and anyone else I missed!
 
-If you have any questions, either open an issue here, message Matty(@mosk_i) or Merc (@Vyce_Merculous) on Twitter, or comment on the reddit post.
+<hr>
+
+If you have any questions, either open an issue here, message Matty(@mosk\_i) or Merc (@Vyce\_Merculous) on Twitter, or comment on the reddit post.
 
 Also just note, just because there's something not used in the project, do not send us thousands of messages asking us to add whatever you want.
 Do it yourselves, its not hard, at all. Just look things up, the Internet is a thing.
