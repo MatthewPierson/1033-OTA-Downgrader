@@ -18,9 +18,9 @@ if [ "$#" == 3 ]; then
 		fi
 
 		string=$(lsusb | grep -c "checkm8")
-		echo "We seem to be in pwned DFU mode!"
 
 		if [ $string == 1 ]; then
+			echo "We seem to be in pwned DFU mode!"
 
 			if [ -e "build" ]; then
 				echo "[+] Build folder exists! Updating only!"
@@ -187,7 +187,7 @@ if [ "$#" == 3 ]; then
 
 		else
 			echo "Didn't not find checkm8 within lsusb! We are going go exit! Please run again!"
-			exit 1
+			exit 
 		fi
 	fi
 else
