@@ -9,7 +9,8 @@ if [ "$#" == 3 ]; then
 		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	else
 		echo "[+] Installing dependencies"
-		brew install libtool automake lsusb openssl
+		brew install libtool automake lsusb openssl libplist
+
 		if [ -e "ipwndfu_public" ]; then
 			cd ipwndfu_public && git pull origin master
 			cd ..
@@ -33,23 +34,14 @@ if [ "$#" == 3 ]; then
 			else
 				echo "[+] Build folder does not exist! Grabbing dependencies and installing!"
 				mkdir -p build && cd build
-				git clone --recursive https://github.com/s0uthwest/tsschecker
+				echo 'export PATH="/usr/local/opt/openssl/bin:$PATH"' >> ~/.bash_profile # This will just keep adding it to the bash_profile file. FIX THIS.
 				git clone --recursive https://github.com/merculous/futurerestore
-				git clone --recursive https://github.com/xerub/img4lib
+				git clone --recursive https://github.com/tihmstar/img4tool # old img4tool works with futurerestore and newer does not. Plus, this one is needed anyways.
 				git clone --recursive https://github.com/tihmstar/liboffsetfinder64
-				git clone https://github.com/tihmstar/img4tool
+				git clone --recursive https://github.com/s0uthwest/tsschecker # Timstar's has retarded libplist error.
 				git clone https://github.com/libimobiledevice/libirecovery
-				cd tsschecker
-				./autogen.sh
-				echo "[+] Sleeping for 5 seconds. Ensure you have no missing dependencies. If so, please install anything missing."
-				sleep 5s
-				make && make install
-				cd ../futurerestore
-				./autogen.sh
-				echo "[+] Sleeping for 5 seconds. Ensure you have no missing dependencies. If so, please install anything missing."
-				sleep 5s
-				make && make install
-				cd ../liboffsetfinder64
+
+				cd futurerestore # Fix the stupid bug with img4tool in here. The export works but its so fucking janky, you'd need to cd into the dir manually
 				./autogen.sh
 				echo "[+] Sleeping for 5 seconds. Ensure you have no missing dependencies. If so, please install anything missing."
 				sleep 5s
@@ -59,14 +51,22 @@ if [ "$#" == 3 ]; then
 				echo "[+] Sleeping for 5 seconds. Ensure you have no missing dependencies. If so, please install anything missing."
 				sleep 5s
 				make && make install
-				cd ../img4lib
+				cd ../liboffsetfinder64
+				./autogen.sh
+				echo "[+] Sleeping for 5 seconds. Ensure you have no missing dependencies. If so, please install anything missing."
+				sleep 5s
+				make && make install
+				cd ../tsschecker
+				./autogen.sh
+				echo "[+] Sleeping for 5 seconds. Ensure you have no missing dependencies. If so, please install anything missing."
+				sleep 5s
 				make && make install
 				cd ../libirecovery
 				make && make install
 				echo "[+] Dependencies should now be installed and compiled."
 			fi
 
-			rm -rfv ipsw dummy_file *.decrypted *.im4p *.prepatched *.raw *.img4 shsh downgrade* *.restore
+			rm -rfv ipsw dummy_file *.im4p *.prepatched *.raw *.img4 shsh downgrade* 
 			echo "Killing iTunes as this will be quite annoying with what we are going to do."
 			killall iTunes && killall iTunesHelper
 			mkdir -p ipsw
@@ -83,18 +83,16 @@ if [ "$#" == 3 ]; then
 					cp -rv ipsw/Firmware/all_flash/sep-firmware.n53.RELEASE.im4p .
 				fi
 
-				img4 -i iBSS.iphone6.RELEASE.im4p -o iBSS.decrypted -k f2aa35f6e27c409fd57e9b711f416cfe599d9b18bc51d93f2385fa4e83539a2eec955fce5f4ae960b252583fcbebfe75 -D
-				img4 -i iBEC.iphone6.RELEASE.im4p -o iBEC.decrypted -k 75a06e85e2d9835827334738bb84ce7315c61c585d30ab07497f68aee0a64c433e4b1183abde4cfd91c185b9a70ab91a -D
-				img4tool -e -o iBSS.raw iBSS.decrypted
-				img4tool -e -o iBEC.raw iBEC.decrypted
+				img4tool -e --iv f2aa35f6e27c409fd57e9b711f416cfe --key 599d9b18bc51d93f2385fa4e83539a2eec955fce5f4ae960b252583fcbebfe75 -o iBSS.raw iBSS.iphone6.RELEASE.im4p
+				img4tool -e --iv 75a06e85e2d9835827334738bb84ce73 --key 15c61c585d30ab07497f68aee0a64c433e4b1183abde4cfd91c185b9a70ab91a -o iBEC.raw iBEC.iphone6.RELEASE.im4p
 				./iBoot64Patcher iBSS.raw iBSS.prepatched
 				./iBoot64Patcher iBEC.raw iBEC.prepatched
-				img4tool -p iBSS.im4p --tag ibss --info checkm8 iBSS.prepatched
-				img4tool -p iBEC.im4p --tag ibec --info checkm8 iBEC.prepatched 
+				img4tool -c iBSS.im4p -t ibss iBSS.prepatched
+				img4tool -c iBEC.im4p -t ibec iBEC.prepatched
 				tsschecker -d $1 -i 10.3.3 -o -m manifests/BuildManifest_$1_1033_OTA.plist -e $2 -s --save-path shsh
 				mv -v shsh/*.shsh* shsh/stitch.shsh2
-				img4tool -p iBSS.im4p -c iBSS.img4 -s shsh/stitch.shsh2
-				img4tool -p iBEC.im4p -c iBEC.img4 -s shsh/stitch.shsh2
+				img4tool -c iBSS.img4 -p iBSS.im4p -s shsh/stitch.shsh2 
+				img4tool -c iBEC.img4 -p iBEC.im4p -s shsh/stitch.shsh2
 				cp -v iBSS.img4 ipsw/Firmware/dfu/iBSS.iphone6.RELEASE.im4p
 				cp -v iBEC.img4 ipsw/Firmware/dfu/iBEC.iphone6.RELEASE.im4p
 			fi
@@ -114,10 +112,9 @@ if [ "$#" == 3 ]; then
 					cp -rv ipsw/Firmware/all_flash/sep-firmware.j73.RELEASE.im4p .
 				fi 
 
-				img4 -i iBEC.ipad4.RELEASE.im4p -o iBEC.decrypted -k a83dfcc277766ccb5da4220811ec2407b4f8d062a97628231a289ae2a50647c309c43030577dca7fc2eee3a13ddb51ea -D 
-				img4tool -e -o iBEC.raw iBEC.decrypted
+				img4tool -e --iv a83dfcc277766ccb5da4220811ec2407 --key b4f8d062a97628231a289ae2a50647c309c43030577dca7fc2eee3a13ddb51ea -o iBEC.raw iBEC.ipad4.RELEASE.im4p
 				./iBoot64Patcher iBEC.raw iBEC.prepatched 
-				img4tool -p iBEC.im4p --tag ibec --info checkm8 iBEC.prepatched 
+				img4tool -c iBEC.im4p -t ibec iBEC.prepatched 
 
 					if [ $1 == iPad4,3 ]; then
 						tsschecker -d $1 --boardconfig j73AP -i 10.3.3 -o -m manifests/BuildManifest_$1_1033_OTA.plist -e $2 -s --save-path shsh
@@ -126,7 +123,7 @@ if [ "$#" == 3 ]; then
 					fi
 
 				mv -v shsh/*.shsh* shsh/stitch.shsh2 
-				img4tool -p iBEC.im4p -c iBEC.img4 -s shsh/stitch.shsh2 
+				img4tool -c iBEC.img4 -p iBEC.im4p -s shsh/stitch.shsh2 
 				cp -v iBEC.img4 ipsw/Firmware/dfu/iBEC.ipad4.RELEASE.im4p
 			fi
 
@@ -139,12 +136,11 @@ if [ "$#" == 3 ]; then
 					cp -rv ipsw/Firmware/all_flash/sep-firmware.j86.RELEASE.im4p .
 				fi
 
-				img4 -i iBEC.ipad4b.RELEASE.im4p -o iBEC.decrypted -k 3067a2585100890afd3b266926ac254bdcdf5a9eb3ae0464e984333e15876faa116525ca4b61f361283a808ca09c7480 -D 
-				img4tool -e -o iBEC.raw iBEC.decrypted
+				img4tool -e --iv 3067a2585100890afd3b266926ac254b --key dcdf5a9eb3ae0464e984333e15876faa116525ca4b61f361283a808ca09c7480 -o iBEC.raw iBEC.ipad4b.RELEASE.im4p
 				./iBoot64Patcher iBEC.raw iBEC.prepatched 
-				img4tool -p iBEC.im4p --tag ibec --info checkm8 iBEC.prepatched 
+				img4tool -c iBEC.im4p -t ibec iBEC.prepatched 
 				mv -v shsh/*.shsh* shsh/stitch.shsh2 
-				img4tool -p iBEC.im4p -c iBEC.img4 -s shsh/stitch.shsh2 
+				img4tool -c iBEC.img4 -p iBEC.im4p -s shsh/stitch.shsh2 
 				cp -v iBEC.img4 ipsw/Firmware/dfu/iBEC.ipad4b.RELEASE.im4p 
 			fi
 
@@ -186,7 +182,7 @@ if [ "$#" == 3 ]; then
 			echo "P.S. You know, this could look even better and be even easier if we port it to Python :D"
 
 		else
-			echo "Didn't not find checkm8 within lsusb! We are going go exit! Please run again!"
+			echo "Did not find checkm8 within lsusb. We are going to exit. Please enter pwned DFU and run again!"
 			exit 
 		fi
 	fi
