@@ -264,7 +264,8 @@ if [ "$#" == 1 ]; then
             echo "Done prepping files! Time to downgrade!!!"
 
             echo "****RESTORING!****"
-
+            echo "Waiting for device to reconnect..."
+            sleep 5
             futurerestore -t shsh/apnonce.shsh2 -s sep-firmware.*.RELEASE.im4p -m manifests/BuildManifest_"$device"_1033_OTA.plist -b Mav7Mav8-7.60.00.Release.bbfw -p manifests/BuildManifest_"$device"_1033_OTA.plist downgrade.ipsw
 
             echo "Cleaning up :D"
