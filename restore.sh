@@ -19,6 +19,7 @@ if [ "$#" == 3 ]; then
 		fi
 
 		string=$(lsusb | grep -c "checkm8")
+		echo "Don't panic if you see an error from lsusb! This is an error from lsusb itself, the script will still work."
 
 		if [ $string == 1 ]; then
 			echo "We seem to be in pwned DFU mode!"

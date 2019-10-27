@@ -8,7 +8,8 @@ Yes, this may not work out of the box for everyone. Please note, if you are expe
 
 Only supports the iPhone 5s (6,1 and 6,2), iPad Air (iPad4,1 iPad4,2 and iPad4,3) and iPad Mini 2 (iPad4,4 and iPad4,5). No iPad4,6 support ever because it doesn't have 10.3.3 OTA signed as it shipped with 7.1 not 7.0.
 
-Has been tested on macOS Mojave and Catalina, on both fresh installs and not fresh. Some MacOS versions have better success than others, we cannot fix this.
+Has been tested on macOS Mojave. If you are running High Sierra or Catalina, it seems like these are the worst for ipwndfu to exploit your device. I'd advise either running a new install or
+just not even running this. You won't get anywhere on those versions until axi0mX updates the exploit
 
 If this breaks your phone or macOS install neither Matty or Merc take absolutely no responsibility.
 This script has been tested by Matty, Merc, and others and should be fine but in case something goes wrong, that's on you not us. 
@@ -27,6 +28,7 @@ Patience!!!
 
 How to downgrade:
 -------------------------------------------
+(Please cd into this directory or else you will have issues.)
 
 1. Download your iOS 10.3.3 ipsw and make sure it's in your current directory.
 
