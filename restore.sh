@@ -9,7 +9,7 @@ if [ "$#" == 3 ]; then
 		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	else
 		echo "[+] Installing dependencies"
-		brew install libtool automake lsusb openssl libplist
+		brew install libtool automake lsusb openssl zlib
 
 		if [ -e "ipwndfu_public" ]; then
 			cd ipwndfu_public && git pull origin master
@@ -34,14 +34,15 @@ if [ "$#" == 3 ]; then
 			else
 				echo "[+] Build folder does not exist! Grabbing dependencies and installing!"
 				mkdir -p build && cd build
-				echo 'export PATH="/usr/local/opt/openssl/bin:$PATH"' >> ~/.bash_profile # This will just keep adding it to the bash_profile file. FIX THIS.
 				git clone --recursive https://github.com/merculous/futurerestore
-				git clone --recursive https://github.com/tihmstar/img4tool # old img4tool works with futurerestore and newer does not. Plus, this one is needed anyways.
+				git clone --recursive https://github.com/tihmstar/img4tool 
 				git clone --recursive https://github.com/tihmstar/liboffsetfinder64
-				git clone --recursive https://github.com/s0uthwest/tsschecker # Timstar's has retarded libplist error.
+				git clone --recursive https://github.com/s0uthwest/tsschecker 
 				git clone https://github.com/libimobiledevice/libirecovery
 
-				cd futurerestore # Fix the stupid bug with img4tool in here. The export works but its so fucking janky, you'd need to cd into the dir manually
+				cd futurerestore
+				export LDFLAGS="-L/usr/local/opt/openssl/lib"
+  				export CPPFLAGS="-I/usr/local/opt/openssl/include" 
 				./autogen.sh
 				echo "[+] Sleeping for 5 seconds. Ensure you have no missing dependencies. If so, please install anything missing."
 				sleep 5s
@@ -178,6 +179,8 @@ if [ "$#" == 3 ]; then
 			futurerestore -t shsh/apnonce.shsh2 -s sep-firmware.*.RELEASE.im4p -m manifests/BuildManifest_$1_1033_OTA.plist \
 			-b Mav7Mav8-7.60.00.Release.bbfw -p manifests/BuildManifest_$1_1033_OTA.plist downgrade.ipsw
 
+			echo "Cleaning up :D"
+			rm -rfv dummy_file iBSS* iBEC* *.bbfw *.im4p downgrade ipsw
 			echo "If you see this, we're done! Shoutout to the devs and Matty for making this possible! - Merculous"
 			echo "P.S. You know, this could look even better and be even easier if we port it to Python :D"
 
