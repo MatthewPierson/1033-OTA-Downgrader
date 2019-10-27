@@ -9,7 +9,7 @@ if [ "$#" == 3 ]; then
 		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	else
 		echo "[+] Installing dependencies"
-		brew install libtool automake lsusb openssl zlib
+		brew install libtool automake lsusb openssl zlib libplist
 
 		if [ -e "ipwndfu_public" ]; then
 			cd ipwndfu_public && git pull origin master
