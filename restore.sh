@@ -43,6 +43,8 @@ if [ "$#" == 3 ]; then
 				git clone --recursive https://github.com/tihmstar/img4tool
 				git clone --recursive https://github.com/s0uthwest/tsschecker 
 
+				export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
+
 				cd libusbmuxd
 				./autogen.sh
 				make && make install
