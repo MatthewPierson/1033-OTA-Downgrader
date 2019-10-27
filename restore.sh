@@ -9,7 +9,7 @@ if [ "$#" == 3 ]; then
 		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	else
 		echo "[+] Installing dependencies"
-		brew install libtool automake lsusb openssl zlib libplist
+		brew install libtool automake lsusb openssl libzip pkg-config libplist
 
 		if [ -e "ipwndfu_public" ]; then
 			cd ipwndfu_public && git pull origin master
@@ -34,36 +34,40 @@ if [ "$#" == 3 ]; then
 			else
 				echo "[+] Build folder does not exist! Grabbing dependencies and installing!"
 				mkdir -p build && cd build
-				git clone --recursive https://github.com/merculous/futurerestore
-				git clone --recursive https://github.com/tihmstar/img4tool 
-				git clone --recursive https://github.com/tihmstar/liboffsetfinder64
-				git clone --recursive https://github.com/s0uthwest/tsschecker 
+				git clone https://github.com/libimobiledevice/libusbmuxd
 				git clone https://github.com/libimobiledevice/libirecovery
+				git clone https://github.com/libimobiledevice/libimobiledevice
+				git clone https://github.com/tihmstar/libfragmentzip
+				git clone --recursive https://github.com/merculous/futurerestore
+				git clone --recursive https://github.com/tihmstar/liboffsetfinder64
+				git clone --recursive https://github.com/tihmstar/img4tool
+				git clone --recursive https://github.com/s0uthwest/tsschecker 
 
-				cd futurerestore
-				export LDFLAGS="-L/usr/local/opt/openssl/lib"
-  				export CPPFLAGS="-I/usr/local/opt/openssl/include" 
+				cd libusbmuxd
 				./autogen.sh
-				echo "[+] Sleeping for 5 seconds. Ensure you have no missing dependencies. If so, please install anything missing."
-				sleep 5s
 				make && make install
-				cd ../img4tool
+				cd ../libirecovery
 				./autogen.sh
-				echo "[+] Sleeping for 5 seconds. Ensure you have no missing dependencies. If so, please install anything missing."
-				sleep 5s
+				make && make install
+				cd ../libimobiledevice
+				./autogen.sh
+				make && make install
+				cd ../libfragmentzip
+				./autogen.sh
+				make && make install
+				cd ../futurerestore
+				./autogen.sh
 				make && make install
 				cd ../liboffsetfinder64
 				./autogen.sh
-				echo "[+] Sleeping for 5 seconds. Ensure you have no missing dependencies. If so, please install anything missing."
-				sleep 5s
+				make && make install
+				cd ../img4tool
+				./autogen.sh
 				make && make install
 				cd ../tsschecker
 				./autogen.sh
-				echo "[+] Sleeping for 5 seconds. Ensure you have no missing dependencies. If so, please install anything missing."
-				sleep 5s
 				make && make install
-				cd ../libirecovery
-				make && make install
+
 				echo "[+] Dependencies should now be installed and compiled."
 			fi
 
