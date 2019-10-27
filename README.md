@@ -8,14 +8,8 @@ Yes, this may not work out of the box for everyone. Please note, if you are expe
 
 Only supports the iPhone 5s (6,1 and 6,2), iPad Air (iPad4,1 iPad4,2 and iPad4,3) and iPad Mini 2 (iPad4,4 and iPad4,5). No iPad4,6 support ever because it doesn't have 10.3.3 OTA signed as it shipped with 7.1 not 7.0.
 
-<<<<<<< HEAD
-Has been tested on macOS Mojave, on both fresh installs and not fresh. Would not reccomend Catalina (at this stage) as most users run into issues. 
-
-So macOS support is only Mojave currently. No Catalina, no High Sierra and no Sierra or lower. If it works for you on an unsupported version then great but offically only Mojave is supported. 
-=======
-Has been tested on macOS Mojave. If you are running High Sierra or Catalina, it seems like these are the worst for ipwndfu to exploit your device. I'd advise either running a new install or
+Has been tested on macOS Mojave but SHOULD work on Catalina as it now doesn't need to write to / but CATALINA IS UNTESTED CURRENTLY. Don't complain to us if it doesn't work, just give us errors and we will try fix it. If you are running High Sierra or Catalina, it seems like these are the worst for ipwndfu to exploit your device. I'd advise either running a new install or
 just not even running this. You won't get anywhere on those versions until axi0mX updates the exploit.
->>>>>>> pr/25
 
 Windows support will probably be something that would never happen. Axi0mX probably isn't interested in supporting Windows with ipwndfu. Until then, Windows support will not be added.
 
@@ -40,13 +34,15 @@ How to downgrade:
 
 1. Download your iOS 10.3.3 ipsw and make sure it's in your current directory.
 
-2. Run restore.sh as so, with also changing the arguments (don't add the quotes) with what you have: ./restore.sh "device" "ecid" "pathtoipsw"
+2. Place device into DFU mode and connect to computer.
 
-3. Wait
+3. Run restore.sh as so, with also changing the arguments (don't add the quotes) with what you have: ./restore.sh "pathtoipsw"
 
-4. Install your favorite iOS 10.x jailbreak, or with checkra1n, when its out (and supports iOS 10).
+4. Wait
 
-5. Give feedback (issues, a thank you, anything that should be added to this)
+5. Install your favorite iOS 10.x jailbreak, or with checkra1n, when its out (and supports iOS 10).
+
+6. Give feedback (issues, a thank you, anything that should be added to this)
 
 Credits: 
 -------------------------------------------

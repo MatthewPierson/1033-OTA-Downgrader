@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# $0 <exec> $1 <device> $2 <ecid> $3 <ipsw>
+# $0 <exec> $device <ipsw>
 
-if [ "$#" == 3 ]; then
+if [ "$#" == 1 ]; then
 
 	if [ ! -e "/usr/local/bin/brew" ]; then
 		echo "OOOOF, brew is not installed? Installing..."
@@ -18,9 +18,25 @@ if [ "$#" == 3 ]; then
 			git clone https://github.com/MatthewPierson/ipwndfu_public
 		fi
 
-		string=$(lsusb | grep -c "checkm8")
-		echo "Don't panic if you see an error from lsusb! This is an error from lsusb itself, the script will still work."
+        cd ipwndfu_public
+        string=$(lsusb | grep -c "checkm8")
+        until [ $string = 1 ];
+        do
+            killall iTunes && killall iTunesHelper
+            echo "Waiting 10 seconds to allow you to enter DFU mode"
+            sleep 10
+            echo "Attempting to get into pwndfu mode"
+            echo "Please just enter DFU mode again on each reboot"
+            echo "The script will run ipwndfu again and again until the device is in PWNDFU mode"
+            ./ipwndfu -p
+            string=$(lsusb | grep -c "checkm8")
+        done
+        
+        sleep 3
 
+        python rmsigchks.py
+        cd ..
+        
 		if [ $string == 1 ]; then
 			echo "We seem to be in pwned DFU mode!"
 
@@ -79,13 +95,80 @@ if [ "$#" == 3 ]; then
 			killall iTunes && killall iTunesHelper
 			mkdir -p ipsw
 			mkdir -p shsh
-			unzip -d ipsw $3
+			unzip -d ipsw $1
 			cp -rv ipsw/Firmware/Mav7Mav8-7.60.00.Release.bbfw .
+            ls
+            ./igetnonce | grep 'n53ap' &> /dev/null
+            if [ $? == 0 ]; then
+               echo "Supported Device"
+               device="iPhone6,2"
+               echo $device
+            fi
 
-			if [ $1 == iPhone6,1 ] || [ $1 == iPhone6,2 ]; then # If iPhone 5S
+            ./igetnonce | grep 'n51ap' &> /dev/null
+            if [ $? == 0 ]; then
+               echo "Supported Device"
+               device="iPhone6,1"
+               echo $device
+            fi
+
+            ./igetnonce | grep 'j71AP' &> /dev/null
+            if [ $? == 0 ]; then
+               echo "Supported Device"
+               device="iPad4,1"
+               echo $device
+            fi
+
+            ./igetnonce | grep 'j72AP' &> /dev/null
+            if [ $? == 0 ]; then
+               echo "Supported Device"
+               device="iPad4,2"
+               echo $device
+            fi
+
+            ./igetnonce | grep 'j85AP' &> /dev/null
+            if [ $? == 0 ]; then
+               echo "Supported Device"
+               device="iPad4,4"
+               echo $device
+            fi
+
+            ./igetnonce | grep 'j86AP' &> /dev/null
+            if [ $? == 0 ]; then
+               echo "Supported Device"
+               device="iPad4,5"
+               echo $device
+            fi
+
+            ./igetnonce | grep 'j85AP' &> /dev/null
+            if [ $? == 0 ]; then
+               echo "Supported Device"
+               device="iPad4,4"
+               echo $device
+            fi
+
+            if [ -z "$device" ]
+            then
+                echo "Either unsupported device or no device found."
+                echo "Exiting.."
+                exit
+            else
+                echo "Supported device found."
+            fi
+
+            #Credit to @dora2_yururi for ECID/Apnonce getting stuff from Nudaoaddu
+
+            ret=$(./igetnonce 2>/dev/null | grep ECID)
+            ecidhex=$(echo $ret | cut -d '=' -f 2 )
+            ecidhex2=$(echo $ecidhex | tr '[:lower:]' '[:upper:]')
+            echo $ecidhex2 >/dev/null
+            ecid=$(echo "obase=10; ibase=16; $ecidhex2" | bc)
+            echo $ecid
+
+			if [ $device == iPhone6,1 ] || [ $device == iPhone6,2 ]; then # If iPhone 5S
 				mv -v ipsw/Firmware/dfu/*.iphone6*.im4p .
 
-				if [ $1 == iPhone6,1 ]; then 
+				if [ $device == iPhone6,1 ]; then
 					cp -rv ipsw/Firmware/all_flash/sep-firmware.n51.RELEASE.im4p .
 				else
 					cp -rv ipsw/Firmware/all_flash/sep-firmware.n53.RELEASE.im4p .
@@ -97,7 +180,7 @@ if [ "$#" == 3 ]; then
 				./iBoot64Patcher iBEC.raw iBEC.prepatched
 				img4tool -c iBSS.im4p -t ibss iBSS.prepatched
 				img4tool -c iBEC.im4p -t ibec iBEC.prepatched
-				tsschecker -d $1 -i 10.3.3 -o -m manifests/BuildManifest_$1_1033_OTA.plist -e $2 -s --save-path shsh
+				tsschecker -d "$device" -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid -s --save-path shsh
 				mv -v shsh/*.shsh* shsh/stitch.shsh2
 				img4tool -c iBSS.img4 -p iBSS.im4p -s shsh/stitch.shsh2 
 				img4tool -c iBEC.img4 -p iBEC.im4p -s shsh/stitch.shsh2
@@ -105,18 +188,18 @@ if [ "$#" == 3 ]; then
 				cp -v iBEC.img4 ipsw/Firmware/dfu/iBEC.iphone6.RELEASE.im4p
 			fi
 
-			if [ $1 == iPad4,1 ] || [ $1 == iPad4,2 ] || [ $1 == iPad4,3 ]; then # If iPad Air
+			if [ $device == iPad4,1 ] || [ $device == iPad4,2 ] || [ $device == iPad4,3 ]; then # If iPad Air
 				mv -v ipsw/Firmware/dfu/iBEC.ipad4.RELEASE.im4p .
 
-				if [ $1 == iPad4,1 ]; then
+				if [ $device == iPad4,1 ]; then
 					cp -rv ipsw/Firmware/all_flash/sep-firmware.j71.RELEASE.im4p .
 				fi
 
-				if [ $1 == iPad4,2 ]; then
+				if [ $device == iPad4,2 ]; then
 					cp -rv ipsw/Firmware/all_flash/sep-firmware.j72.RELEASE.im4p .
 				fi 
 
-				if [ $1 == iPad4,3 ]; then
+				if [ $device == iPad4,3 ]; then
 					cp -rv ipsw/Firmware/all_flash/sep-firmware.j73.RELEASE.im4p .
 				fi 
 
@@ -124,10 +207,10 @@ if [ "$#" == 3 ]; then
 				./iBoot64Patcher iBEC.raw iBEC.prepatched 
 				img4tool -c iBEC.im4p -t ibec iBEC.prepatched 
 
-					if [ $1 == iPad4,3 ]; then
-						tsschecker -d $1 --boardconfig j73AP -i 10.3.3 -o -m manifests/BuildManifest_$1_1033_OTA.plist -e $2 -s --save-path shsh
+					if [ $device == iPad4,3 ]; then
+						tsschecker -d "$device" --boardconfig j73AP -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid -s --save-path shsh
 					else
-						tsschecker -d $1 -i 10.3.3 -o -m manifests/BuildManifest_$1_1033_OTA.plist -e $2 -s --save-path shsh 
+						tsschecker -d "$device" -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid -s --save-path shsh
 					fi
 
 				mv -v shsh/*.shsh* shsh/stitch.shsh2 
@@ -135,10 +218,10 @@ if [ "$#" == 3 ]; then
 				cp -v iBEC.img4 ipsw/Firmware/dfu/iBEC.ipad4.RELEASE.im4p
 			fi
 
-			if [ $1 == iPad4,4 ] || [ $1 == iPad4,5 ]; then # If iPad Mini 2
+			if [ $device == iPad4,4 ] || [ $device == iPad4,5 ]; then # If iPad Mini 2
 				mv -v ipsw/Firmware/dfu/iBEC.ipad4b.RELEASE.im4p .
 
-				if [ $1 == iPad4,4 ]; then
+				if [ $device == iPad4,4 ]; then
 					cp -rv ipsw/Firmware/all_flash/sep-firmware.j85.RELEASE.im4p .
 				else
 					cp -rv ipsw/Firmware/all_flash/sep-firmware.j86.RELEASE.im4p .
@@ -156,158 +239,45 @@ if [ "$#" == 3 ]; then
 			zip ../downgrade.ipsw -r9 *
 			cd ..
 			echo "checkm8" >> dummy_file
-			python ipwndfu_public/rmsigchks.py
 			raw=$(irecovery -q | grep NONC)
 			apnonce=$(echo $raw | cut -d ':' -f 2)
+            
+            if [ $device == iPad4,1 ] || [ $device == iPad4,2 ] || [ $device == iPad4,3 ] || [ $device == iPad4,4 ] || [ $device == iPad4,5 ]; then
+                irecovery -f dummy_file
+                irecovery -f iBEC.img4
 
-			if [ $1 == iPad4,1 ] || [ $1 == iPad4,2 ] || [ $1 == iPad4,3 ] || [ $1 == iPad4,4 ] || [ $1 == iPad4,5 ]; then
-				irecovery -f dummy_file
-				irecovery -f iBEC.img4
+                if [ $device == iPad4,3 ]; then
+                    tsschecker -d "$device" --boardconfig j73AP -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid --apnonce $apnonce -s
+                else
+                    tsschecker -d "$device" -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid --apnonce $apnonce -s
+                fi
+            fi
 
-				if [ $1 == iPad4,3 ]; then
-					tsschecker -d $1 --boardconfig j73AP -i 10.3.3 -o -m manifests/BuildManifest_$1_1033_OTA.plist -e $2 --apnonce $apnonce -s
-				else
-					tsschecker -d $1 -i 10.3.3 -o -m manifests/BuildManifest_$1_1033_OTA.plist -e $2 --apnonce $apnonce -s
-				fi
-			fi
+            if [ $device == iPhone6,1 ] || [ $device == iPhone6,2 ]; then
+                irecovery -f dummy_file
+                irecovery -f iBSS.img4
+                irecovery -f iBEC.img4
+                tsschecker -d "$device" -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid --apnonce $apnonce -s
+            fi
 
-			if [ $1 == iPhone6,1 ] || [ $1 == iPhone6,2 ]; then
-				irecovery -f dummy_file
-				irecovery -f iBSS.img4
-				irecovery -f iBEC.img4
-				tsschecker -d $1 -i 10.3.3 -o -m manifests/BuildManifest_$1_1033_OTA.plist -e $2 --apnonce $apnonce -s
-			fi
+            mv -v *.shsh* shsh/apnonce.shsh2
+            echo "Done prepping files! Time to downgrade!!!"
 
-			mv -v *.shsh* shsh/apnonce.shsh2
-			echo "Done prepping files! Time to downgrade!!!"
+            echo "****RESTORING!****"
 
-			echo "****RESTORING!****"
+            futurerestore -t shsh/apnonce.shsh2 -s sep-firmware.*.RELEASE.im4p -m manifests/BuildManifest_"$device"_1033_OTA.plist -b Mav7Mav8-7.60.00.Release.bbfw -p manifests/BuildManifest_"$device"_1033_OTA.plist downgrade.ipsw
 
-			futurerestore -t shsh/apnonce.shsh2 -s sep-firmware.*.RELEASE.im4p -m manifests/BuildManifest_$1_1033_OTA.plist \
-			-b Mav7Mav8-7.60.00.Release.bbfw -p manifests/BuildManifest_$1_1033_OTA.plist downgrade.ipsw
+            echo "Cleaning up :D"
+            rm -rfv dummy_file iBSS* iBEC* *.bbfw *.im4p downgrade ipsw
+            echo "If you see this, we're done! Shoutout to the devs and Matty for making this possible! - Merculous"
+            echo "P.S. You know, this could look even better and be even easier if we port it to Python :D"
 
-			echo "Cleaning up :D"
-			rm -rfv dummy_file iBSS* iBEC* *.bbfw *.im4p downgrade ipsw
-			echo "If you see this, we're done! Shoutout to the devs and Matty for making this possible! - Merculous"
-			echo "P.S. You know, this could look even better and be even easier if we port it to Python :D"
-
-		else
-			echo "Did not find checkm8 within lsusb. We are going to exit. Please enter pwned DFU and run again!"
-			exit 
-		fi
-	fi
+        else
+            echo "Did not find checkm8 within lsusb. We are going to exit. Please enter pwned DFU and run again!"
+            exit
+        fi
+    fi
 else
-	echo "Usage: $0 <device> <ecid> PathToIpsw (ipsw must be in this directory)"
-	echo "Example: $0 iPhone6,1 <ecid> iPhone_4.0_64bit_10.3.3_14G60_Restore.ipsw"
+    echo "Usage: $0 <device> <ecid> PathToIpsw (ipsw must be in this directory)"
+    echo "Example: $0 iPhone6,1 <ecid> iPhone_4.0_64bit_10.3.3_14G60_Restore.ipsw"
 fi
-<<<<<<< HEAD
-if [ $device == iPad4,3 ];
-then
-bin/tsschecker -e "$ecid" -d "$device" --boardconfig j73AP -s -o -i 9.9.10.3.3 --buildid 14G60 -m restore/BuildManifest_"$device"_1033_OTA.plist --save-path shsh/ --apnonce "$nonce"
-fi
-
-mv shsh/* shsh/OTA.shsh
-
-echo "Do you want to save a copy of the OTA SHSH to somewhere on your computer? (y/n)"
-read save
-
-if [ $save == "y" ];
-then
-
-echo "Please drag and drop desired folder into this terminal window. (No trailing /)"
-read path
-cp shsh/OTA.shsh $path
-fi
-
-echo "[Log] SHSH saved"
-
-echo "[Log] Starting restore process"
-echo ""
-
-if [ $device == iPad4,2 ] || [ $device == iPad4,3 ] || [ $device == iPad4,5 ];
-then
-
-echo "[Log] Copying SEP and Baseband"
-cp 10.3.3.custom/Firmware/Mav7Mav8-7.60.00.Release.bbfw restore/Baseband.bbfw
-else
-echo "[Log] No baseband required"
-fi
-
-if [ $device == iPad4,1 ]
-then
-cp 10.3.3.custom/Firmware/all_flash/sep-firmware.j71.RELEASE.im4p restore/sep-firmware."$device".RELEASE.im4p
-fi
-if [ $device == iPad4,2 ];
-then
-cp 10.3.3.custom/Firmware/all_flash/sep-firmware.j72.RELEASE.im4p restore/sep-firmware."$device".RELEASE.im4p
-fi
-if [ $device == iPad4,3 ];
-then
-cp 10.3.3.custom/Firmware/all_flash/sep-firmware.j73.RELEASE.im4p restore/sep-firmware."$device".RELEASE.im4p
-fi
-if [ $device == iPad4,4 ];
-then
-cp 10.3.3.custom/Firmware/all_flash/sep-firmware.j85.RELEASE.im4p restore/sep-firmware."$device".RELEASE.im4p
-fi
-if [ $device == iPad4,5 ];
-then
-cp 10.3.3.custom/Firmware/all_flash/sep-firmware.j86.RELEASE.im4p restore/sep-firmware."$device".RELEASE.im4p
-fi
-echo "[Log] SEP and Baseband copied"
-echo ""
-
-RESTORE_RESULT=
-if [ $device == iPhone6,1 ] || [ $device == iPhone6,2 ];
-then
-echo "[Log] Copying SEP and Baseband"
-cp 10.3.3.custom/Firmware/Mav7Mav8-7.60.00.Release.bbfw restore/Baseband.bbfw
-cp 10.3.3.custom/Firmware/all_flash/sep-firmware.n53.RELEASE.im4p restore/sep-firmware.iPhone6,2.RELEASE.im4p
-cp 10.3.3.custom/Firmware/all_flash/sep-firmware.n51.RELEASE.im4p restore/sep-firmware.iPhone6,1.RELEASE.im4p
-echo "[Log] SEP and Baseband copied"
-echo ""
-echo "[Log] Cleaning up un-needed files"
-rm -rf 10.3.3.custom
-echo "[Log] Clean up done"
-echo "[Log] Starting futurerestore"
-bin/futurerestore -t shsh/OTA.shsh -s restore/sep-firmware."$device".RELEASE.im4p -m restore/BuildManifest_"$device"_1033_OTA.plist -b restore/Baseband.bbfw -p restore/BuildManifest_"$device"_1033_OTA.plist 10.3.3.custom.ipsw
-RESTORE_RESULT=$?
-fi
-if [ $device == iPad4,2 ] || [ $device == iPad4,3 ] || [ $device == iPad4,5 ];
-
-then
-echo "[Log] Cleaning up un-needed files"
-rm -rf 10.3.3.custom
-echo "[Log] Clean up done"
-echo "[Log] Starting futurerestore"
-bin/futurerestore -t shsh/OTA.shsh -s restore/sep-firmware."$device".RELEASE.im4p -m restore/BuildManifest_"$device"_1033_OTA.plist -b restore/Baseband.bbfw -p restore/BuildManifest_"$device"_1033_OTA.plist 10.3.3.custom.ipsw
-RESTORE_RESULT=$?
-fi
-if [ $device == iPad4,1 ] || [ $device == iPad4,4 ];
-then
-echo "[Log] Cleaning up un-needed files"
-rm -rf 10.3.3.custom
-echo "[Log] Clean up done"
-echo "[Log] Starting futurerestore"
-bin/futurerestore -t shsh/OTA.shsh -s restore/sep-firmware."$device".RELEASE.im4p -m restore/BuildManifest_"$device"_1033_OTA.plist --no-baseband 10.3.3.custom.ipsw
-RESTORE_RESULT=$?
-fi
-
-if [ $RESTORE_RESULT -eq 0 ]; then
-  echo "[Log] Futurerestoring complete"
-  echo ""
-  echo "**************** Downgrade complete! Enjoy 10.3.3 =) ****************"
-  echo "**************** Follow me on twitter @mosk_i for help/updates ******"
-else
-  echo "[Log] Futurerestore failed"
-  
-  echo "[Log] Exiting recovery mode"
-  bin/futurerestore --exit-recovery
-  
-  echo ""
-  echo "[ERROR] FUTURERESTORE FAILED"
-  echo "[ERROR] FUTURERESTORE FAILED"
-  echo "[ERROR] FUTURERESTORE FAILED"
-  echo "[ERROR] FUTURERESTORE FAILED"
-fi
-=======
->>>>>>> pr/25
