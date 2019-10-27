@@ -4,7 +4,7 @@
 
 if [ "$#" == 3 ]; then
 
-	if [ ! "/usr/local/bin/brew" ]; then
+	if [ ! -e "/usr/local/bin/brew" ]; then
 		echo "OOOOF, brew is not installed? Installing..."
 		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	else
