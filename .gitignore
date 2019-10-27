@@ -1,1 +1,12 @@
 .DS_Store
+*.ipsw
+Mav7Mav8-7.60.00.Release.bbfw
+build
+downgrade
+dummy_file
+iBEC*
+iBSS*
+ipsw
+ipwndfu_public
+sep-firmware.*.RELEASE.im4p
+shsh
