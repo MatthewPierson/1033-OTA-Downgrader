@@ -86,7 +86,7 @@ if [ "$#" == 1 ]; then
 				cd ../tsschecker
 				./autogen.sh
 				make && make install
-
+                cd ../..
 				echo "[+] Dependencies should now be installed and compiled."
 			fi
 
