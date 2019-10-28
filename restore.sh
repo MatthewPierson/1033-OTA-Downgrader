@@ -266,8 +266,14 @@ if [ "$#" == 1 ]; then
             echo "****RESTORING!****"
             echo "Waiting for device to reconnect..."
             sleep 5
-            futurerestore -t shsh/apnonce.shsh2 -s sep-firmware.*.RELEASE.im4p -m manifests/BuildManifest_"$device"_1033_OTA.plist -b Mav7Mav8-7.60.00.Release.bbfw -p manifests/BuildManifest_"$device"_1033_OTA.plist downgrade.ipsw
-
+            if [ $device == iPhone6,1 ] || [ $device == iPhone6,2 ] || [ $device == iPad4,5 ] || [ $device == iPad4,2 ] || [ $device == iPad4,3 ]; then
+            
+                futurerestore -t shsh/apnonce.shsh2 -s sep-firmware.*.RELEASE.im4p -m manifests/BuildManifest_"$device"_1033_OTA.plist -b Mav7Mav8-7.60.00.Release.bbfw -p manifests/BuildManifest_"$device"_1033_OTA.plist downgrade.ipsw
+            fi
+            if  [ $device == iPad4,4 ] || [ $device == iPad4,1 ]; then
+            
+                futurerestore -t shsh/apnonce.shsh2 -s sep-firmware.*.RELEASE.im4p -m manifests/BuildManifest_"$device"_1033_OTA.plist --no-baseband downgrade.ipsw
+            fi
             echo "Cleaning up :D"
             rm -rfv dummy_file iBSS* iBEC* *.bbfw *.im4p downgrade ipsw
             echo "If you see this, we're done! Shoutout to the devs and Matty for making this possible! - Merculous"
