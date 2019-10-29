@@ -204,12 +204,12 @@ if [ "$#" == 1 ]; then
                 ./iBoot64Patcher iBSS.raw iBSS.prepatched
                 img4tool -c iBSS.im4p -t ibss iBSS.prepatched
 
-					if [ $device == iPad4,3 ]; then
-						tsschecker -d "$device" --boardconfig j73AP -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid -s --save-path shsh
-                    fi
-                    if [ $device != iPad4,3 ]; then
-						tsschecker -d "$device" -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid -s --save-path shsh
-					fi
+                if [ $device == iPad4,3 ]; then
+                    tsschecker -d "$device" --boardconfig j73AP -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid -s --save-path shsh
+                fi
+                if [ $device = iPad4,1 ] || [ $device = iPad4,2 ]; then
+                    tsschecker -d "$device" -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid -s --save-path shsh
+                fi
 
 				mv -v shsh/*.shsh* shsh/stitch.shsh2 
 				img4tool -c iBEC.img4 -p iBEC.im4p -s shsh/stitch.shsh2 
@@ -234,6 +234,7 @@ if [ "$#" == 1 ]; then
                 img4tool -e --iv b3aafc6e758290c3aeec057105d16b36 --key 77659e333d13ebb5ad804daf4fbbaf4a9c86bc6065e88ac0190df8c119a916f3 -o iBSS.raw iBSS.ipad4b.RELEASE.im4p
                 ./iBoot64Patcher iBSS.raw iBSS.prepatched
                 img4tool -c iBSS.im4p -t ibss iBSS.prepatched
+                tsschecker -d "$device" -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid -s --save-path shsh
 				mv -v shsh/*.shsh* shsh/stitch.shsh2 
 				img4tool -c iBEC.img4 -p iBEC.im4p -s shsh/stitch.shsh2 
 				cp -v iBEC.img4 ipsw/Firmware/dfu/iBEC.ipad4b.RELEASE.im4p
@@ -250,8 +251,11 @@ if [ "$#" == 1 ]; then
             
             if [ $device == iPad4,1 ] || [ $device == iPad4,2 ] || [ $device == iPad4,3 ] || [ $device == iPad4,4 ] || [ $device == iPad4,5 ]; then
                 irecovery -f dummy_file
+                sleep 1
                 irecovery -f iBSS.img4
+                sleep 1
                 irecovery -f iBEC.img4
+                sleep 2
 
                 if [ $device == iPad4,3 ]; then
                     tsschecker -d "$device" --boardconfig j73AP -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid --apnonce $apnonce -s
@@ -262,8 +266,11 @@ if [ "$#" == 1 ]; then
 
             if [ $device == iPhone6,1 ] || [ $device == iPhone6,2 ]; then
                 irecovery -f dummy_file
+                sleep 1
                 irecovery -f iBSS.img4
+                sleep 1
                 irecovery -f iBEC.img4
+                sleep 2
                 tsschecker -d "$device" -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid --apnonce $apnonce -s
             fi
 
