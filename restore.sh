@@ -112,38 +112,31 @@ if [ "$#" == 1 ]; then
                echo $device
             fi
 
-            ./igetnonce | grep 'j71AP' &> /dev/null
+            ./igetnonce | grep 'j71ap' &> /dev/null
             if [ $? == 0 ]; then
                echo "Supported Device"
                device="iPad4,1"
                echo $device
             fi
 
-            ./igetnonce | grep 'j72AP' &> /dev/null
+            ./igetnonce | grep 'j72ap' &> /dev/null
             if [ $? == 0 ]; then
                echo "Supported Device"
                device="iPad4,2"
                echo $device
             fi
 
-            ./igetnonce | grep 'j85AP' &> /dev/null
+            ./igetnonce | grep 'j85ap' &> /dev/null
             if [ $? == 0 ]; then
                echo "Supported Device"
                device="iPad4,4"
                echo $device
             fi
 
-            ./igetnonce | grep 'j86AP' &> /dev/null
+            ./igetnonce | grep 'j86ap' &> /dev/null
             if [ $? == 0 ]; then
                echo "Supported Device"
                device="iPad4,5"
-               echo $device
-            fi
-
-            ./igetnonce | grep 'j85AP' &> /dev/null
-            if [ $? == 0 ]; then
-               echo "Supported Device"
-               device="iPad4,4"
                echo $device
             fi
 
