@@ -206,7 +206,8 @@ if [ "$#" == 1 ]; then
 
 					if [ $device == iPad4,3 ]; then
 						tsschecker -d "$device" --boardconfig j73AP -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid -s --save-path shsh
-					else
+                    fi
+                    if [ $device != iPad4,3 ]; then
 						tsschecker -d "$device" -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid -s --save-path shsh
 					fi
 
