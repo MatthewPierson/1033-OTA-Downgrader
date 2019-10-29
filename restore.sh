@@ -190,6 +190,7 @@ if [ "$#" == 1 ]; then
 
 			if [ $device == iPad4,1 ] || [ $device == iPad4,2 ] || [ $device == iPad4,3 ]; then # If iPad Air
 				mv -v ipsw/Firmware/dfu/iBEC.ipad4.RELEASE.im4p .
+                mv -v ipsw/Firmware/dfu/iBSS.ipad4.RELEASE.im4p .
 
 				if [ $device == iPad4,1 ]; then
 					cp -rv ipsw/Firmware/all_flash/sep-firmware.j71.RELEASE.im4p .
@@ -205,7 +206,10 @@ if [ "$#" == 1 ]; then
 
 				img4tool -e --iv a83dfcc277766ccb5da4220811ec2407 --key b4f8d062a97628231a289ae2a50647c309c43030577dca7fc2eee3a13ddb51ea -o iBEC.raw iBEC.ipad4.RELEASE.im4p
 				./iBoot64Patcher iBEC.raw iBEC.prepatched 
-				img4tool -c iBEC.im4p -t ibec iBEC.prepatched 
+				img4tool -c iBEC.im4p -t ibec iBEC.prepatched
+                img4tool -e --iv 28eed0b4cada986cee0ec95350b64f04 --key c8b8f09e4cc888e4d0045145bceebb3783e146d56393ffce3268aae3225af3d7 -o iBSS.raw iBSS.ipad4.RELEASE.im4p
+                ./iBoot64Patcher iBSS.raw iBSS.prepatched
+                img4tool -c iBSS.im4p -t ibss iBSS.prepatched
 
 					if [ $device == iPad4,3 ]; then
 						tsschecker -d "$device" --boardconfig j73AP -i 10.3.3 -o -m manifests/BuildManifest_"$device"_1033_OTA.plist -e $ecid -s --save-path shsh
@@ -216,10 +220,13 @@ if [ "$#" == 1 ]; then
 				mv -v shsh/*.shsh* shsh/stitch.shsh2 
 				img4tool -c iBEC.img4 -p iBEC.im4p -s shsh/stitch.shsh2 
 				cp -v iBEC.img4 ipsw/Firmware/dfu/iBEC.ipad4.RELEASE.im4p
+                img4tool -c iBSS.img4 -p iBSS.im4p -s shsh/stitch.shsh2
+                cp -v iBSS.img4 ipsw/Firmware/dfu/iBSS.ipad4.RELEASE.im4p
 			fi
 
 			if [ $device == iPad4,4 ] || [ $device == iPad4,5 ]; then # If iPad Mini 2
 				mv -v ipsw/Firmware/dfu/iBEC.ipad4b.RELEASE.im4p .
+                mv -v ipsw/Firmware/dfu/iBSS.ipad4b.RELEASE.im4p .
 
 				if [ $device == iPad4,4 ]; then
 					cp -rv ipsw/Firmware/all_flash/sep-firmware.j85.RELEASE.im4p .
@@ -229,10 +236,15 @@ if [ "$#" == 1 ]; then
 
 				img4tool -e --iv 3067a2585100890afd3b266926ac254b --key dcdf5a9eb3ae0464e984333e15876faa116525ca4b61f361283a808ca09c7480 -o iBEC.raw iBEC.ipad4b.RELEASE.im4p
 				./iBoot64Patcher iBEC.raw iBEC.prepatched 
-				img4tool -c iBEC.im4p -t ibec iBEC.prepatched 
+				img4tool -c iBEC.im4p -t ibec iBEC.prepatched
+                img4tool -e --iv b3aafc6e758290c3aeec057105d16b36 --key 77659e333d13ebb5ad804daf4fbbaf4a9c86bc6065e88ac0190df8c119a916f3 -o iBSS.raw iBSS.ipad4b.RELEASE.im4p
+                ./iBoot64Patcher iBSS.raw iBSS.prepatched
+                img4tool -c iBSS.im4p -t ibss iBSS.prepatched
 				mv -v shsh/*.shsh* shsh/stitch.shsh2 
 				img4tool -c iBEC.img4 -p iBEC.im4p -s shsh/stitch.shsh2 
-				cp -v iBEC.img4 ipsw/Firmware/dfu/iBEC.ipad4b.RELEASE.im4p 
+				cp -v iBEC.img4 ipsw/Firmware/dfu/iBEC.ipad4b.RELEASE.im4p
+                img4tool -c iBSS.img4 -p iBSS.im4p -s shsh/stitch.shsh2
+                cp -v iBSS.img4 ipsw/Firmware/dfu/iBSS.ipad4b.RELEASE.im4p
 			fi
 
 			cd ipsw
@@ -244,6 +256,7 @@ if [ "$#" == 1 ]; then
             
             if [ $device == iPad4,1 ] || [ $device == iPad4,2 ] || [ $device == iPad4,3 ] || [ $device == iPad4,4 ] || [ $device == iPad4,5 ]; then
                 irecovery -f dummy_file
+                irecovery -f iBSS.img4
                 irecovery -f iBEC.img4
 
                 if [ $device == iPad4,3 ]; then

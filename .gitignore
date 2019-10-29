@@ -10,3 +10,5 @@ ipsw
 ipwndfu_public
 sep-firmware.*.RELEASE.im4p
 shsh
+*.shsh
+*.shsh2
