@@ -9,7 +9,13 @@ if [ "$#" == 1 ]; then
 		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	else
 		echo "[+] Installing dependencies"
-		brew install libtool automake lsusb openssl libzip pkg-config libplist
+		brew install libtool automake lsusb openssl libzip pkg-config
+        brew install --HEAD libusbmuxd
+        brew link --overwrite libusbmuxd
+        brew install --HEAD libimobiledevice
+        brew link --overwrite libimobiledevice
+        brew install --HEAD libplist
+        brew link --overwrite libplist
 
 		if [ -e "ipwndfu_public" ]; then
 			cd ipwndfu_public && git pull origin master
@@ -41,55 +47,56 @@ if [ "$#" == 1 ]; then
 			echo "We seem to be in pwned DFU mode!"
 
 			if [ -e "build" ]; then
-				echo "[+] Build folder exists! Updating only!"
-				cd build
-				for d in *
-					do
-						(cd $d && git pull origin master)
-				done
-				cd ..
+				echo "[+] Build folder exists! If the script doesn't work please delete the 'Build' folder and run it again"
+                sleep 3
+				
 			else
 				echo "[+] Build folder does not exist! Grabbing dependencies and installing!"
 				mkdir -p build && cd build
-				git clone https://github.com/libimobiledevice/libusbmuxd
 				git clone https://github.com/libimobiledevice/libirecovery
-				git clone https://github.com/libimobiledevice/libimobiledevice
 				git clone https://github.com/tihmstar/libfragmentzip
+				git clone https://github.com/tihmstar/libgeneral.git
 				git clone --recursive https://github.com/merculous/futurerestore
-				git clone --recursive https://github.com/tihmstar/liboffsetfinder64
-				git clone --recursive https://github.com/tihmstar/img4tool
-				git clone --recursive https://github.com/s0uthwest/tsschecker 
+				git clone -n https://github.com/tihmstar/liboffsetfinder64
+				git clone https://github.com/tihmstar/img4tool.git
+				git clone --recursive https://github.com/tihmstar/tsschecker
 
 				export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
 
-				cd libusbmuxd
+			
+				cd libirecovery
+                git submodule init && git submodule update
 				./autogen.sh
 				make && make install
-				cd ../libirecovery
-				./autogen.sh
-				make && make install
-				cd ../libimobiledevice
+				cd ../libgeneral
+                git submodule init && git submodule update
 				./autogen.sh
 				make && make install
 				cd ../libfragmentzip
+                git submodule init && git submodule update
 				./autogen.sh
 				make && make install
 				cd ../futurerestore
+                git submodule init && git submodule update
 				./autogen.sh
 				make && make install
 				cd ../liboffsetfinder64
+                git checkout c1b4203f1f8e05d49673548bab8963388be2dbf0
+                git submodule init && git submodule update
 				./autogen.sh
 				make && make install
 				cd ../img4tool
+                git submodule init && git submodule update
 				./autogen.sh
 				make && make install
 				cd ../tsschecker
+                git submodule init && git submodule update
 				./autogen.sh
 				make && make install
                 cd ../..
 				echo "[+] Dependencies should now be installed and compiled."
 			fi
-
+            
 			rm -rfv ipsw dummy_file *.im4p *.prepatched *.raw *.img4 shsh downgrade* 
 			echo "Killing iTunes as this will be quite annoying with what we are going to do."
 			killall iTunes && killall iTunesHelper
@@ -289,7 +296,7 @@ if [ "$#" == 1 ]; then
                 futurerestore -t shsh/apnonce.shsh2 -s sep-firmware.*.RELEASE.im4p -m manifests/BuildManifest_"$device"_1033_OTA.plist --no-baseband downgrade.ipsw
             fi
             echo "Cleaning up :D"
-            rm -rfv dummy_file iBSS* iBEC* *.bbfw *.im4p downgrade ipsw
+            rm -rfv dummy_file iBSS* iBEC* *.bbfw *.im4p downgrade ipsw *.ipsw
             echo "If you see this, we're done! Shoutout to the devs and Matty for making this possible! - Merculous"
             echo "P.S. You know, this could look even better and be even easier if we port it to Python :D"
 
