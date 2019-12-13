@@ -1,3 +1,6 @@
+# NO LONGER MAINTAINED, USE [VIEUX](https://github.com/MatthewPierson/Vieux) INSTEAD!
+
+
 # 10.3.3 OTA Downgrade Script
 Script to downgrade any device that has iOS 10.3.3 OTA signed.
  
